@@ -1,4 +1,4 @@
-# Ager/Timer Example Dataset Creater
+# Mini Project: Ager/Timer Example Dataset Creator
 
 Inputs: 
 

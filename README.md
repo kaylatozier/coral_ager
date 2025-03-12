@@ -30,15 +30,18 @@ pip install -e .
 
 Function: Generate a synthetic coral δ¹⁸O dataset with depth in mm.
 
-**Parameters:**
-        "-n", core_depth (int): Total depth of the coral core in mm (the total number of samples with data).
-        "-t", temp_trend (float): The isotope warming trend (default -0.02 per mm).
-        "-b", baseline_d18o (float): The baseline δ¹⁸O value.
-        "-l", location (str): Name of the location for labeling.
-        "-f", filename (str): Name of the file to save the dataset.
+**Options:**
+| **Flag** | **Parameter**      | **Type**  | **Description** |
+|----------|-------------------|-----------|------------------------------------------------|
+| `-n`     | `core_depth`      | `int`     | Total depth of the coral core in mm (total number of samples with data). |
+| `-t`     | `temp_trend`      | `float`   | The isotope warming trend (default: -0.02 per mm). |
+| `-b`     | `baseline_d18o`   | `float`   | The baseline δ¹⁸O value. |
+| `-l`     | `location`        | `str`     | Name of the location for labeling. |
+| `-f`     | `filename`        | `str`     | Name of the output file to save the dataset. |
 
-**Returns:**
-        df_d18o (DataFrame): DataFrame with Depth (mm) and δ¹⁸O values.
+
+**Returns:** `df_d18o`: DataFrame with Depth (mm) and δ¹⁸O values.
+
 To generate a **coral δ¹⁸O dataset**, use:
 
 ```bash
@@ -50,15 +53,16 @@ coral_data oxygen_isotopes [options]
 
 Function: Generate synthetic SST (Sea Surface Temperature) data over a given period with a warming trend.
 
-**Parameters:**       "-n", years (int): Number of years of SST data.
-       "-t", warming_trend (float): Temperature increase per year (°C).
-       "-b", start_temp (float): Starting average SST (°C).
-       "-l", location (str): Location name for the figure title.
-       "-f", filename (str): Name of the TXT file to save the dataset.
+**Options:** 
+| **Flag** | **Parameter**       | **Type**  | **Description** |
+|----------|--------------------|-----------|--------------------------------------------|
+| `-n`     | `years`            | `int`     | Number of **years** of SST data. |
+| `-t`     | `warming_trend`    | `float`   | Temperature increase per year (**°C/year**). |
+| `-b`     | `start_temp`       | `float`   | **Starting average SST** in degrees Celsius (**°C**). |
+| `-l`     | `location`         | `str`     | **Location name** for labeling. |
+| `-f`     | `filename`         | `str`     | Name of the **output file** to save the dataset. |
 
- **Returns:**
-        df_sst (DataFrame): DataFrame with "Years Ago" and "SST (°C)".
-
+ **Returns:** `df_sst`: DataFrame with "Years Ago" and "SST (°C)".
 
 To generate a **Sea Surface Temperature (SST) dataset**, use:
 

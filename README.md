@@ -8,7 +8,7 @@ To install the program locally, first ensure you have Conda installed. Then, cre
 
 # Step 1: Create and activate Conda environment
 ``` bash
-conda create --name coral_data_env python=3.9 numpy pandas -c conda-forge
+conda create --name coral_data_env python=3.9 numpy pandas matplotlib -c conda-forge
 conda activate coral_data_env
 ```
 # Step 2: Clone the repository

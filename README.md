@@ -37,6 +37,7 @@ Function: Generate a synthetic coral δ¹⁸O dataset with depth in mm.
 
 
 **Returns:** `df_d18o`: DataFrame with Depth (mm) and δ¹⁸O values.
+**Plots:** δ¹⁸O values vs. Depth (mm)
 
 To generate a **coral δ¹⁸O dataset**, use:
 
@@ -60,6 +61,7 @@ Function: Generate synthetic SST (Sea Surface Temperature) data over a given per
 
 
  **Returns:** `df_sst`: DataFrame with "Years Ago" and "SST (°C)".
+ **Plots:** SST (°C) vs. Year
 
 To generate a **Sea Surface Temperature (SST) dataset**, use:
 

@@ -27,7 +27,7 @@ def parse_command_line():
     sst_parser = subparsers.add_parser("sst", help="Generate SST dataset")
     sst_parser.add_argument("-n","--years", type=int, default=20, help="Number of years of SST data (default: 20).")
     sst_parser.add_argument("-t","--warming_trend", type=float, default=0.02, help="Temperature increase per year in °C (default: 0.02).")
-    sst_parser.add_argument("-b","--baseline_temp", type=float, default=28, help="Baseline average SST in °C (default: 28).")
+    sst_parser.add_argument("-b","--start_temp", type=float, default=28, help="Starting average SST in °C (default: 28).")
     sst_parser.add_argument("-l","--location", type=str, default="Fake Coral Location", help="Location name for labeling (default: 'Fake Coral Location').")
     sst_parser.add_argument("-f","--filename", type=str, default="simulated_sst_dataset.csv", help="Output CSV filename (default: 'simulated_sst_dataset.csv').")
 
@@ -51,7 +51,7 @@ def main():
         generate_sst_data(
             years=args.years,
             warming_trend=args.warming_trend,
-            baseline_temp=args.start_temp,
+            start_temp=args.start_temp,
             location=args.location,
             filename=args.filename
         )

@@ -65,14 +65,14 @@ def generate_sst_data(years=20, warming_trend=0.02, start_temp=28, location="Fak
     """
     
     # Generate a date range for figure (2005-2025) and "years ago" format for dataset
-    date_range = pd.date_range(start="2005-01-01", end="2025-12-01", freq='MS')  # Monthly data
-    years_ago = np.linspace(0, years, num=(years + 1) * 12)  # Generate "years ago" data points
+    date_range = pd.date_range(end="2025-12-01", periods=years * 12, freq='MS')
+    years_ago = np.linspace(0, years, num=len(date_range))  # Same length as SST values
 
     # Generate seasonal SST variability (sinusoidal pattern)
     seasonal_variation = 1.0 * np.sin(2 * np.pi * date_range.month / 12)  # Annual cycle
 
     # Apply long-term warming trend
-    sst_trend = warming_trend * (date_range.year - 2005)
+    sst_trend = warming_trend * np.linspace(0, years, num=len(date_range))
 
     # Add noise for realism
     sst_noise = np.random.normal(0, 0.3, len(date_range))
@@ -96,8 +96,6 @@ def generate_sst_data(years=20, warming_trend=0.02, start_temp=28, location="Fak
     plt.xlabel("Year")
     plt.ylabel("SST (°C)")
     plt.title(f"Simulated SST Data - {location}")
-    plt.ylim(26, 30)
-    plt.grid()
     plt.legend()
     plt.show()
 

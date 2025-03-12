@@ -31,13 +31,13 @@ pip install -e .
 Function: Generate a synthetic coral δ¹⁸O dataset with depth in mm.
 
 **Options:**
-| **Flag** | **Parameter**      | **Type**  | **Description** |
-|----------|-------------------|-----------|------------------------------------------------|
-| `-n`     | `core_depth`      | `int`     | Total depth of the coral core in mm (total number of samples with data). |
-| `-t`     | `temp_trend`      | `float`   | The isotope warming trend (default: -0.02 per mm). |
-| `-b`     | `baseline_d18o`   | `float`   | The baseline δ¹⁸O value. |
-| `-l`     | `location`        | `str`     | Name of the location for labeling. |
-| `-f`     | `filename`        | `str`     | Name of the output file to save the dataset. |
+| **Flag** | **Parameter**      | **Type**  | **Description** | **Default Values** |
+|----------|-------------------|-----------|------------------------------------------------|------------|
+| `-n`     | `core_depth`      | `int`     | Total depth of the coral core in mm (total number of samples with data). | 100 mm
+| `-t`     | `temp_trend`      | `float`   | The isotope warming trend.| -0.02 per mm |
+| `-b`     | `baseline_d18o`   | `float`   | The baseline δ¹⁸O value. | -5 ppt |
+| `-l`     | `location`        | `str`     | Name of the location for labeling. | "Fake Coral Location" |
+| `-f`     | `filename`        | `str`     | Name of the output file to save the dataset. | "simulated_d18o_dataset.csv" |
 
 
 **Returns:** `df_d18o`: DataFrame with Depth (mm) and δ¹⁸O values.

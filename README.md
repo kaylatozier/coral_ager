@@ -1,10 +1,6 @@
 # Coral_Data: Ager/Timer Example Dataset Creator :fish: :chart_with_upwards_trend:
 
-Creates fake datasets for input to Ager/Timer program in requested format:
-
-Location_Depthd18O_Agerin: .txt file (tab delimited) with first column as composite depth from top (mm) and second column and isotope data (ppt) or trace element ratios 
-
-Location_AgeModel_Agerin: .txt file (tab delimited) with first column as composite depth from top (mm) and the second column as the associated age (years ago) from the dating anchor points (ex. wettest and driest months)
+Creates tab-delimited .txt files of synthesized coral fossil oxygen isotope values and sea surface temperatures for input to Ager/Timer program. 
 
 ### Installation
 

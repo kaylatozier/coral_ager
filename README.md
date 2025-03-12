@@ -19,7 +19,7 @@ pip install -e .
 To generate a **coral δ¹⁸O dataset**, use:
 
 ```bash
-mini-project coral [options] 
+mini-project oxygen_isotopes [options] 
 
 ```
 ## SST Dataset

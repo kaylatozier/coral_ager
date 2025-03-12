@@ -1,61 +1,60 @@
 #!/usr/bin/env python
 
 """
-Command line interface to darwin_day
+Command-line interface for mini-project.
 """
 
-#import argparse
-#from darwinday import birthday, info
+import argparse
+from mini_project.module import generate_coral_d18O, generate_sst_data
 
+def parse_command_line():
+    """
+    Parses command-line arguments for generating synthetic datasets.
+    """
+    parser = argparse.ArgumentParser(description="Generate synthetic coral δ¹⁸O or SST datasets.")
 
-#def parse_command_line():
-    "parses args for the darwin_day funtion"
+    subparsers = parser.add_subparsers(dest="command", required=True, help="Choose which dataset to generate")
 
-    # init parser and add arguments
-    parser = argparse.ArgumentParser()
+    # Coral δ¹⁸O dataset options
+    coral_parser = subparsers.add_parser("oxygen_isotopes", help="Generate coral δ¹⁸O dataset")
+    coral_parser.add_argument("--core_depth", type=int, default=100, help="Total depth of the coral core in mm (default: 100).")
+    coral_parser.add_argument("--temp_trend", type=float, default=-0.02, help="Isotope warming trend per mm (default: -0.02).")
+    coral_parser.add_argument("--baseline_d18o", type=float, default=-5, help="Baseline δ¹⁸O value (default: -5).")
+    coral_parser.add_argument("--location", type=str, default="Fake Coral Location", help="Location name for labeling (default: 'Fake Coral Location').")
+    coral_parser.add_argument("--filename", type=str, default="simulated_d18o_dataset.csv", help="Output CSV filename (default: 'simulated_d18o_dataset.csv').")
 
-    # add long args
-    parser.add_argument(
-        "--next",
-        help="returns a countdown until the next Darwin Day",
-        action="store_true")
+    # SST dataset options
+    sst_parser = subparsers.add_parser("sst", help="Generate SST dataset")
+    sst_parser.add_argument("--years", type=int, default=20, help="Number of years of SST data (default: 20).")
+    sst_parser.add_argument("--warming_trend", type=float, default=0.02, help="Temperature increase per year in °C (default: 0.02).")
+    sst_parser.add_argument("--start_temp", type=float, default=28, help="Starting average SST in °C (default: 28).")
+    sst_parser.add_argument("--location", type=str, default="Fake Coral Location", help="Location name for labeling (default: 'Fake Coral Location').")
+    sst_parser.add_argument("--filename", type=str, default="simulated_sst_dataset.csv", help="Output CSV filename (default: 'simulated_sst_dataset.csv').")
 
-    # add long args
-    parser.add_argument(
-        "--last",
-        help="returns a countdown since the last Darwin Day",
-        action="store_true")
-
-    parser.add_argument(
-        "--info",
-        help="returns a random fact about Chuck D.",
-        action="store_true")
-
-    # parse args
-    args = parser.parse_args()
-
-    # check that user only entered one action arg
-    if sum([args.next, args.last, args.info]) > 1:
-        raise SystemExit(
-            "only one of 'next', 'last' or 'info' at a time.")
-    return args
-
+    return parser.parse_args()
 
 def main():
-    "run main function on parsed args"
-
-    # get arguments from command line as a dict-like object
+    """
+    Main function to process arguments and call the appropriate function.
+    """
     args = parse_command_line()
-
-    # pass argument to call darwinday function
-    if args.next:
-        birthday('next')
-    elif args.last:
-        birthday('last')
-    elif args.info:
-        info()
-
+    
+    if args.command == "oxygen_isotopes":
+        generate_coral_d18O(
+            core_depth=args.core_depth,
+            temp_trend=args.temp_trend,
+            baseline_d18o=args.baseline_d18o,
+            location=args.location,
+            filename=args.filename
+        )
+    elif args.command == "sst":
+        generate_sst_data(
+            years=args.years,
+            warming_trend=args.warming_trend,
+            start_temp=args.start_temp,
+            location=args.location,
+            filename=args.filename
+        )
 
 if __name__ == "__main__":
-    birthday('next')
-    info()
+    main()

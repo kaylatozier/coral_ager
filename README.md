@@ -34,7 +34,7 @@ Function: Generate a synthetic coral δ¹⁸O dataset with depth in mm.
 | **Flag** | **Parameter**      | **Type**  | **Description** | **Default Values** |
 |----------|-------------------|-----------|------------------------------------------------|------------|
 | `-n`     | `core_depth`      | `int`     | Total depth of the coral core in mm (total number of samples with data). | 100 mm
-| `-t`     | `temp_trend`      | `float`   | The isotope warming trend.| -0.02 per mm |
+| `-t`     | `temp_trend`      | `float`   | The isotope warming trend.| -0.02 ppt per mm |
 | `-b`     | `baseline_d18o`   | `float`   | The baseline δ¹⁸O value. | -5 ppt |
 | `-l`     | `location`        | `str`     | Name of the location for labeling. | "Fake Coral Location" |
 | `-f`     | `filename`        | `str`     | Name of the output file to save the dataset. | "simulated_d18o_dataset.csv" |
@@ -54,13 +54,14 @@ coral_data oxygen_isotopes [options]
 Function: Generate synthetic SST (Sea Surface Temperature) data over a given period with a warming trend.
 
 **Options:** 
-| **Flag** | **Parameter**       | **Type**  | **Description** |
-|----------|--------------------|-----------|--------------------------------------------|
-| `-n`     | `years`            | `int`     | Number of **years** of SST data. |
-| `-t`     | `warming_trend`    | `float`   | Temperature increase per year (**°C/year**). |
-| `-b`     | `start_temp`       | `float`   | **Starting average SST** in degrees Celsius (**°C**). |
-| `-l`     | `location`         | `str`     | **Location name** for labeling. |
-| `-f`     | `filename`         | `str`     | Name of the **output file** to save the dataset. |
+| **Flag** | **Parameter**       | **Type**  | **Description** | **Default Values** |
+|----------|--------------------|-----------|--------------------------------------------|--------------|
+| `-n`     | `years`            | `int`     | Number of years of SST data. | 20 years |
+| `-t`     | `warming_trend`    | `float`   | Temperature increase per year (°C/year). | 0.02 °C/year |
+| `-b`     | `start_temp`       | `float`   | Starting average SST in degrees Celsius (°C). | 28 °C |
+| `-l`     | `location`         | `str`     | Location name for labeling. | "Fake Coral Location" |
+| `-f`     | `filename`         | `str`     | Name of the output file to save the dataset. | "simulated_sst_dataset.csv" |
+
 
  **Returns:** `df_sst`: DataFrame with "Years Ago" and "SST (°C)".
 

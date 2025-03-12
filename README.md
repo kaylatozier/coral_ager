@@ -15,3 +15,8 @@ git clone [https://github.com/kaylatozier/mini-project.git]
 cd ./mini-project  
 pip install -e .
 
+## Coral δ¹⁸O Dataset
+To generate a **coral δ¹⁸O dataset**, use:
+
+```bash
+mini-project coral [options]

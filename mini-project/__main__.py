@@ -4,11 +4,11 @@
 Command line interface to darwin_day
 """
 
-import argparse
-from darwinday import birthday, info
+#import argparse
+#from darwinday import birthday, info
 
 
-def parse_command_line():
+#def parse_command_line():
     "parses args for the darwin_day funtion"
 
     # init parser and add arguments

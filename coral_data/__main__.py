@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 """
-Command-line interface for mini-project.
+Command-line interface for coral_data.
 """
 
 import argparse
-from mini_project.module import generate_coral_d18O, generate_sst_data
+from coral_data.module import generate_coral_d18O, generate_sst_data
 
 def parse_command_line():
     """

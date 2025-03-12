@@ -20,3 +20,9 @@ To generate a **coral δ¹⁸O dataset**, use:
 
 ```bash
 mini-project coral [options]
+
+## SST Dataset
+To generate a **Sea Surface Temperature (SST) dataset**, use:
+
+```bash
+mini-project sst [options]

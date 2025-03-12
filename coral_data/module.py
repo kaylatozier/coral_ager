@@ -7,11 +7,11 @@ def generate_coral_d18O(core_depth=100, temp_trend=-0.02, baseline_d18o=-5, loca
     Generate a synthetic coral δ¹⁸O dataset with depth in mm.
 
     Parameters:
-        core_depth (int): Total depth of the coral core in mm.
-        temp_trend (float): The isotope warming trend (default -0.02 per mm).
-        baseline_d18o (float): The baseline δ¹⁸O value.
-        location (str): Name of the location for labeling.
-        filename (str): Name of the file to save the dataset.
+        "-n", core_depth (int): Total depth of the coral core in mm (the total number of samples with data).
+        "-t", temp_trend (float): The isotope warming trend (default -0.02 per mm).
+        "-b", baseline_d18o (float): The baseline δ¹⁸O value.
+        "-l", location (str): Name of the location for labeling.
+        "-f", filename (str): Name of the file to save the dataset.
 
     Returns:
         df_d18o (DataFrame): DataFrame with Depth (mm) and δ¹⁸O values.
@@ -45,7 +45,7 @@ def generate_coral_d18O(core_depth=100, temp_trend=-0.02, baseline_d18o=-5, loca
 
     return df_d18o
 
-    import numpy as np
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -54,11 +54,11 @@ def generate_sst_data(years=20, warming_trend=0.02, start_temp=28, location="Fak
     Generate synthetic SST (Sea Surface Temperature) data over a given period with a warming trend.
 
     Parameters:
-        years (int): Number of years of SST data.
-        warming_trend (float): Temperature increase per year (°C).
-        start_temp (float): Starting average SST (°C).
-        location (str): Location name for the figure title.
-        filename (str): Name of the TXT file to save the dataset.
+       "-n", years (int): Number of years of SST data.
+       "-t", warming_trend (float): Temperature increase per year (°C).
+       "-b", start_temp (float): Starting average SST (°C).
+       "-l", location (str): Location name for the figure title.
+       "-f", filename (str): Name of the TXT file to save the dataset.
 
     Returns:
         df_sst (DataFrame): DataFrame with "Years Ago" and "SST (°C)".

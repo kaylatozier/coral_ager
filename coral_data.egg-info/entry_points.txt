@@ -1,0 +1,2 @@
+[console_scripts]
+coral_data = coral_data.__main__:main

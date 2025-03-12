@@ -1,0 +1,13 @@
+Metadata-Version: 2.2
+Name: coral_data
+Version: 0.0.1
+Summary: A package for creating toy datasets for Ager/Timer inputs
+Author: Kayla Tozier
+Author-email: kmt2183@columbia.edu
+License: GPLv3
+Classifier: Programming Language :: Python :: 3
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: license
+Dynamic: summary

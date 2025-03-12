@@ -1,0 +1,10 @@
+README.md
+setup.py
+coral_data/__init__.py
+coral_data/__main__.py
+coral_data/module.py
+coral_data.egg-info/PKG-INFO
+coral_data.egg-info/SOURCES.txt
+coral_data.egg-info/dependency_links.txt
+coral_data.egg-info/entry_points.txt
+coral_data.egg-info/top_level.txt

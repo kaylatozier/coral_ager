@@ -24,7 +24,7 @@ Initially, the data will be synthetic—generated to mimic realistic coral oxyge
 - `.txt` or `.csv` files containing depth vs. isotope data
 - Anchor-point age data derived from wet/dry season SST extremes or radiometric dating
 
-If the scope of the project allows, another goal is to allow users to be able to pull SST or isotope datasets from online repositories or REST APIs for coral data.
+If the scope of the project allows, another goal is to allow users to be able to pull SST or isotope datasets from online repositories or REST APIs for coral data, if they exist.
 
 ### Example 1: Depth vs. δ¹⁸O data (for Ager input)
 

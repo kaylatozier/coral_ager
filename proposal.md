@@ -78,4 +78,4 @@ All outputs will be available as .txt, .csv, and optionally PNG or PDF plots.
 
 **Arand Software (Brown University)**
 
-This tool will fill a niche for users who currently rely on Arand but want modern usability and extensibility—particularly those working with coral records and needing a streamlined age modeling workflow.
+This tool will fill a niche for users who currently rely on Arand but want modern usability, particularly those working with coral records and needing a user-friendly age modeling interface.

@@ -39,7 +39,7 @@ Depth (mm)	δ18O (‰)
 5		-3.623413695694918
 6		-3.962078718449261
 ```
-### Example 2: Depth vs. Age anchor points (for Ager input)
+### Example 2: Depth vs. Climate Data (SST or SSS) (for Ager input)
 
 This file contains known age constraints based on SST seasonality or radiometric dating. These are used to align specific depth intervals with absolute calendar years.
 

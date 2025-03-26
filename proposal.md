@@ -44,8 +44,8 @@ Depth (mm)	δ18O (‰)
 This file contains known age constraints based on SST seasonality or radiometric dating. These are used to align specific depth intervals with absolute calendar years.
 
 ```bash 
-Years Ago				SST (°C)
-0.0					30.30035294823275
+Years Ago		SST (°C)
+0.0			30.30035294823275
 0.08368200836820083	30.867196027491964
 0.16736401673640167	31.00322175617057
 0.2510460251046025	31.011474438946866

@@ -66,8 +66,11 @@ $ python timer.py --input Location_AgerOut.txt --t0 0 --dt 0.083333 --output Loc
 The program will output:
 
 **Age-model output:** a time series file with interpolated ages matched to isotope values
+
 **Timer output:** interpolated, equally spaced time-series data ready for spectral analysis
+
 **Optional plots:** e.g., isotope vs. depth, age vs. depth, interpolated time series
+
 All outputs will be available as .txt, .csv, and optionally PNG or PDF plots.
 
 

@@ -31,13 +31,13 @@ If the scope of the project allows, another goal is to allow users to be able to
 This file contains measurements of oxygen isotopes from a coral core, where each row represents a depth in the core and the corresponding δ¹⁸O value.
 ```bash 
 Depth (mm)	δ18O (‰)
-0	-3.9503285846988767
-1	-3.533826430117118
-2	-3.1092057424054924
-3	-2.907697014359197
-4	-3.237389933687895
-5	-3.623413695694918
-6	-3.962078718449261
+0		-3.9503285846988767
+1		-3.533826430117118
+2		-3.1092057424054924
+3		-2.907697014359197
+4		-3.237389933687895
+5		-3.623413695694918
+6		-3.962078718449261
 ```
 ### Example 2: Depth vs. Age anchor points (for Ager input)
 

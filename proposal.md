@@ -2,7 +2,7 @@
 
 ## Project Goal
 
-The goal of this project is to develop a modern, user-friendly software tool for age modeling and spectral analysis of paleoceanographic time series—particularly coral oxygen isotope and SST/SSS records. This tool will serve as a more accessible, flexible, and cross-platform alternative to the outdated Arand software, which is no longer supported and is difficult to run on modern systems. This is critically important for coral paleoclimatology, where age models form the foundation for interpreting past climate variability.
+The goal of this project is to develop a modern, user-friendly software tool for age modeling and spectral analysis of paleoceanographic time series, particularly coral oxygen isotope and SST/SSS records. This tool will serve as a more accessible and updated version of the Arand software from Brown University, which is no longer supported and is difficult to run on modern systems. This is crucial for coral paleoclimatology, as age models are foundational for interpreting past climate variability and geochemical records.
 
 Coral_data creates synthetic coral isotope and SST data for testing, allowing robust validation of this tool with controllable data. This will ultimately support paleoclimate researchers in generating more accurate age models and conducting spectral analyses without the software limitations of Arand. 
 

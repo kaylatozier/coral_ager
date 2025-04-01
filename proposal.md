@@ -26,7 +26,9 @@ Initially, the data will be synthetic—generated to mimic realistic coral oxyge
 
 If the scope of the project allows, another goal is to allow users to be able to pull SST or isotope datasets from online repositories or REST APIs for coral data, if they exist.
 
-### Example 1: Depth vs. δ¹⁸O data (for Ager input)
+### Required Inputs for Ager.py: 
+
+#### Input 1 Example: Depth vs. δ¹⁸O data 
 
 This file contains measurements of oxygen isotopes from a coral core, where each row represents a depth in the core and the corresponding δ¹⁸O value.
 ```bash 
@@ -39,7 +41,7 @@ Depth (mm)	δ18O (‰)
 5		-3.623413695694918
 6		-3.962078718449261
 ```
-### Example 2: Depth vs. Climate Data (SST or SSS) (for Ager input)
+#### Input 2 Example: Depth vs. SST
 
 This file contains known age constraints based on SST seasonality or radiometric dating. These are used to align specific depth intervals with absolute calendar years.
 
@@ -50,6 +52,17 @@ Years Ago		SST (°C)
 0.16736401673640167	31.00322175617057
 0.2510460251046025	31.011474438946866
 0.33472803347280333	30.94428585161999
+```
+
+### Ager.py Output Example:
+
+```bash 
+Depth (mm)	Year
+0			2011
+1			2010.95
+2			2010.90
+3			2010.85
+4			2010.80
 ```
 
 ## User Interaction

@@ -15,10 +15,6 @@ def save_output(filepath, data):
     """Save interpolated time series to file."""
     pass
 
-def plot_time_series(times, values):
-    """Optional: Plot interpolated time series."""
-    pass
-
 def main():
     parser = argparse.ArgumentParser(description="Interpolate age-modeled data to even time steps.")
     parser.add_argument('--input', required=True)
@@ -26,8 +22,6 @@ def main():
     parser.add_argument('--dt', type=float, required=True)
     parser.add_argument('--output', required=True)
     args = parser.parse_args()
-
-    # Implement your workflow here using the functions above
 
 if __name__ == "__main__":
     main()

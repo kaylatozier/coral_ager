@@ -23,18 +23,12 @@ def save_output(filepath, data):
     """Save age-modeled output to file."""
     pass
 
-def plot_age_model(depths, ages):
-    """Optional: Plot age vs. depth."""
-    pass
-
 def main():
     parser = argparse.ArgumentParser(description="Generate age model from coral isotope data.")
     parser.add_argument('--depth-data', required=True)
     parser.add_argument('--age-model', required=True)
     parser.add_argument('--output', required=True)
     args = parser.parse_args()
-
-    # Implement your workflow here using the functions above
 
 if __name__ == "__main__":
     main()

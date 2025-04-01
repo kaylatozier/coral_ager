@@ -1,13 +1,18 @@
+#!/usr/bin/env python
+
+"""Description...
+
+"""
 import argparse
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def read_isotope_data(filepath):
+def read_isotope_data():
     """Read depth vs δ18O data from file."""
     pass
 
-def read_age_constraints(filepath):
+def read_age_constraints():
     """Read age model anchor points from file."""
     pass
 
@@ -30,14 +35,29 @@ def apply_age_model(depth_data, interpolated_ages):
     """Assign ages to each depth based on interpolation."""
     pass
 
-def save_output(filepath, data):
+def save_output():
     """Save age-modeled output to file."""
     pass
 
+#now incorporating the timer code
+
+def read_age_modeled_data():
+    """Read age-modeled output from Ager module."""
+    pass
+
+def interpolate_to_even_time(data, t0, dt):
+    """Interpolate isotope values to even time steps."""
+    pass
+
+def save_output():
+    """Save interpolated time series to file."""
+    pass
+
 def main():
-    parser = argparse.ArgumentParser(description="Generate age model from coral isotope data.")
-    parser.add_argument('--depth-data', required=True)
-    parser.add_argument('--age-model', required=True)
+    parser = argparse.ArgumentParser(description="Interpolate age-modeled data to even time steps.")
+    parser.add_argument('--input', required=True)
+    parser.add_argument('--t0', type=float, required=True)
+    parser.add_argument('--dt', type=float, required=True)
     parser.add_argument('--output', required=True)
     args = parser.parse_args()
 

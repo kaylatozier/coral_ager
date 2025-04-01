@@ -9,52 +9,45 @@ from coral_data.module import generate_coral_d18O, generate_sst_data
 
 def parse_command_line():
     """
-    Parses command-line arguments for generating synthetic datasets.
+    Parses command-line arguments for generating both synthetic coral δ¹⁸O and SST datasets.
     """
-    parser = argparse.ArgumentParser(description="Generate synthetic coral δ¹⁸O or SST datasets.")
+    parser = argparse.ArgumentParser(description="Generate synthetic coral δ¹⁸O and SST datasets.")
 
-    subparsers = parser.add_subparsers(dest="command", required=True, help="Choose which dataset to generate")
+    # Coral options
+    parser.add_argument("--core_depth", type=int, default=100)
+    parser.add_argument("--temp_trend", type=float, default=-0.02)
+    parser.add_argument("--baseline_d18o", type=float, default=-5)
+    parser.add_argument("--d18o_filename", type=str, default="simulated_d18o_dataset.csv")
 
-    # Coral δ¹⁸O dataset options
-    coral_parser = subparsers.add_parser("oxygen_isotopes", help="Generate coral δ¹⁸O dataset")
-    coral_parser.add_argument("-n","--core_depth", type=int, default=100, help="Total depth of the coral core in mm (default: 100).")
-    coral_parser.add_argument("-t","--temp_trend", type=float, default=-0.02, help="Isotope warming trend per mm (default: -0.02).")
-    coral_parser.add_argument("-b","--baseline_d18o", type=float, default=-5, help="Baseline δ¹⁸O value (default: -5).")
-    coral_parser.add_argument("-l", "--location", type=str, default="Fake Coral Location", help="Location name for labeling (default: 'Fake Coral Location').")
-    coral_parser.add_argument("-f","--filename", type=str, default="simulated_d18o_dataset.csv", help="Output CSV filename (default: 'simulated_d18o_dataset.csv').")
+    # SST options
+    parser.add_argument("--years", type=int, default=20)
+    parser.add_argument("--warming_trend", type=float, default=0.02)
+    parser.add_argument("--start_temp", type=float, default=28)
+    parser.add_argument("--sst_filename", type=str, default="simulated_sst_dataset.csv")
 
-    # SST dataset options
-    sst_parser = subparsers.add_parser("sst", help="Generate SST dataset")
-    sst_parser.add_argument("-n","--years", type=int, default=20, help="Number of years of SST data (default: 20).")
-    sst_parser.add_argument("-t","--warming_trend", type=float, default=0.02, help="Temperature increase per year in °C (default: 0.02).")
-    sst_parser.add_argument("-b","--start_temp", type=float, default=28, help="Starting average SST in °C (default: 28).")
-    sst_parser.add_argument("-l","--location", type=str, default="Fake Coral Location", help="Location name for labeling (default: 'Fake Coral Location').")
-    sst_parser.add_argument("-f","--filename", type=str, default="simulated_sst_dataset.csv", help="Output CSV filename (default: 'simulated_sst_dataset.csv').")
+    # Shared argument between the two
+    parser.add_argument("--location", type=str, default="Fake Coral Location")
 
     return parser.parse_args()
 
 def main():
-    """
-    Main function to process arguments and call the appropriate function.
-    """
     args = parse_command_line()
-    
-    if args.command == "oxygen_isotopes":
-        generate_coral_d18O(
-            core_depth=args.core_depth,
-            temp_trend=args.temp_trend,
-            baseline_d18o=args.baseline_d18o,
-            location=args.location,
-            filename=args.filename
-        )
-    elif args.command == "sst":
-        generate_sst_data(
-            years=args.years,
-            warming_trend=args.warming_trend,
-            start_temp=args.start_temp,
-            location=args.location,
-            filename=args.filename
-        )
+
+    generate_coral_d18O(
+        core_depth=args.core_depth,
+        temp_trend=args.temp_trend,
+        baseline_d18o=args.baseline_d18o,
+        location=args.location,
+        filename=args.d18o_filename
+    )
+
+    generate_sst_data(
+        years=args.years,
+        warming_trend=args.warming_trend,
+        start_temp=args.start_temp,
+        location=args.location,
+        filename=args.sst_filename
+    )
 
 if __name__ == "__main__":
     main()

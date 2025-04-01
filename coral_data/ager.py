@@ -1,16 +1,38 @@
 #!/usr/bin/env python
 
-"""Description...
+"""
+Takes output file from simulate.py and 
 
 """
+import csv
 import argparse
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def read_isotope_data():
-    """Read depth vs δ18O data from file."""
-    pass
+def read_isotope_data(filename="simulated_d18o_dataset.csv"):
+    depths = []
+    d18O_values = []
+
+    with open(filename, "r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            depths.append(float(row["depth_mm"]))
+            d18O_values.append(float(row["delta18O"]))
+
+    return depths, d18O_values
+
+def read_sst_data(filename="simulated_sst_dataset.csv"):
+    years_ago = []
+    sst_values = []
+
+    with open(filename, "r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            years_ago.append(float(row["years_ago"]))
+            sst_values.append(float(row["sst (deg C)"]))
+
+    return depths, d18O_values    
 
 def read_age_constraints():
     """Read age model anchor points from file."""

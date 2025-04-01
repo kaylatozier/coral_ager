@@ -12,7 +12,18 @@ def read_age_constraints(filepath):
     pass
 
 def interpolate_ages(depths, anchor_depths, anchor_ages):
-    """Interpolate ages for the full depth range."""
+    """Interpolate ages for the full depth range.
+
+    Linearly interpolate ages for each depth based on anchor depths and ages.
+    
+    Parameters:
+    - depths: array-like, all depths (e.g. from isotope data)
+    - anchor_depths: array-like, depths with known age points
+    - anchor_ages: array-like, ages corresponding to anchor_depths
+    
+    Returns:
+    - interpolated_ages: array of interpolated ages for each input depth
+    """
     pass
 
 def apply_age_model(depth_data, interpolated_ages):

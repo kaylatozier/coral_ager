@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+
+"""Description...
+
+"""
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -45,9 +50,6 @@ def generate_coral_d18O(core_depth=100, temp_trend=-0.02, baseline_d18o=-5, loca
 
     return df_d18o
 
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
 
 def generate_sst_data(years=20, warming_trend=0.02, start_temp=28, location="Fake Coral Location", filename="simulated_sst_dataset.txt"):
     """
@@ -100,3 +102,9 @@ def generate_sst_data(years=20, warming_trend=0.02, start_temp=28, location="Fak
     plt.show()
 
     return df_sst
+
+
+if __name__ == "__main__":
+    # You can test examples of your code here, or leave it empty.
+    data = generate_coral_d18O()
+    print(data)

@@ -76,6 +76,32 @@ python simulate.py [options]
 - CSV file: Years Ago vs SST
 - Plot: SST vs Year
 
+**Example Command-Line Run:**
+```bash
+python simulate.py --core_depth 150 --temp_trend -0.015 --baseline_d18o -4.7 --location "Fiji Coral Reef" --d18o_filename fiji_d18o.csv --years 25 --warming_trend 0.018 --start_temp 27.5 --sst_filename fiji_sst.csv
+```
+**Example Breakdown:**
+**δ¹⁸O options:**
+
+| Argument | Value | Meaning |
+|:---------|:------|:--------|
+| `--core_depth` | `150` | Coral core is 150 mm long |
+| `--temp_trend` | `-0.015` | Slight warming (δ¹⁸O decreasing) with depth |
+| `--baseline_d18o` | `-4.7` | Starting δ¹⁸O value at surface |
+| `--location` | `Fiji Coral Reef` | Label for plots |
+| `--d18o_filename` | `fiji_d18o.csv` | Save δ¹⁸O dataset to this file |
+
+---
+
+**SST options:**
+
+| Argument | Value | Meaning |
+|:---------|:------|:--------|
+| `--years` | `25` | Simulate SST over 25 years |
+| `--warming_trend` | `0.018` | SST warming 0.018 °C per year |
+| `--start_temp` | `27.5` | Starting SST = 27.5 °C |
+| `--sst_filename` | `fiji_sst.csv` | Save SST dataset to this file |
+
 ---
 
 ### 3. Build Age Model and Interpolate δ¹⁸O Time Series ("Ager")

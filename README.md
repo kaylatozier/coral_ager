@@ -61,7 +61,7 @@ Generates synthetic SST data with seasonal cycles, a warming trend, and noise.
 ```bash
 python simulate.py [options]
 ```
-*(runs along with δ¹⁸O generation)*
+*⚠️runs along with δ¹⁸O generation*
 
 **Options:**
 
@@ -118,7 +118,7 @@ When using your own coral δ¹⁸O and SST datasets with `Ager.py`, make sure yo
 | `Depth (mm)` | millimeters | Depth along the coral core |
 | `d18o (per mil)` | per mil (‰) | Measured coral δ¹⁸O values at each depth |
 
-🔹 **Important:**
+**Important:**
 - Column headers must exactly match `"Depth (mm)"` and `"d18o (per mil)"` (case sensitive).
 - Depth should increase downward.
 
@@ -131,13 +131,13 @@ When using your own coral δ¹⁸O and SST datasets with `Ager.py`, make sure yo
 | `Years Ago` | years ago | Time before present (0 = present day) |
 | `SST (°C)` | degrees Celsius (°C) | Sea surface temperature |
 
-🔹 **Important:**
+**Important:**
 - Column headers must exactly match `"Years Ago"` and `"SST (°C)"` (case sensitive).
 - "Years Ago" should increase backward in time.
 
 ---
 
-### ⚠️ Notes
+### ⚠Notes
 
 - CSVs must use **commas** as delimiters.
 - Missing values (NaNs) are not allowed.
@@ -145,7 +145,7 @@ When using your own coral δ¹⁸O and SST datasets with `Ager.py`, make sure yo
 
 ---
 
-## 🎯 Example Workflow
+## Example Workflow
 
 Generate synthetic datasets:
 ```bash

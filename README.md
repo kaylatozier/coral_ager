@@ -104,10 +104,11 @@ python simulate.py --core_depth 150 --temp_trend -0.015 --baseline_d18o -4.7 --l
 
 ---
 
-### Example: Running Ager.py
+
+### Example: Running ager.py
 
 ```bash
-python Ager.py --d18o fiji_d18o.csv --sst fiji_sst.csv --t0 0 --dt 0.1 --output fiji_interpolated_timeseries.csv --tiepoints_output fiji_tiepoints.csv --plot --plot_output fiji_plot.png
+python ager.py --d18o fiji_d18o.csv --sst fiji_sst.csv --t0 0 --dt 0.1 --output fiji_interpolated_timeseries.csv --tiepoints_output fiji_tiepoints.csv --plot --plot_output fiji_plot.png
 ```
 
 **Options:**
@@ -136,7 +137,7 @@ Constructs a linear age model tying δ¹⁸O depth data to SST years, interpolat
 
 **Command-line Usage:**
 ```bash
-python Ager.py [options]
+python ager.py [options]
 ```
 
 **Options:**
@@ -159,9 +160,9 @@ python Ager.py [options]
 
 ---
 
-## 📂 Input File Formatting Requirements for Ager.py (if inputting your own dataset)
+## 📂 Input File Formatting Requirements for ager.py (if inputting your own dataset)
 
-When using your own coral δ¹⁸O and SST datasets with `Ager.py`, make sure your CSV files follow the required formatting:
+When using your own coral δ¹⁸O and SST datasets with `ager.py`, make sure your CSV files follow the required formatting:
 
 ### δ¹⁸O Dataset CSV (Example: `my_coral_data.csv`)
 
@@ -206,7 +207,7 @@ python simulate.py --core_depth 120 --years 20
 
 Then build an age model and interpolate:
 ```bash
-python Ager.py --t0 0 --dt 0.1 --output interpolated_timeseries.csv --plot
+python ager.py --t0 0 --dt 0.1 --output interpolated_timeseries.csv --plot
 ```
 
 ---

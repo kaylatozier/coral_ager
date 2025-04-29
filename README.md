@@ -1,69 +1,182 @@
-# Coral_Data: Ager/Timer Example Dataset Creator :fish: :chart_with_upwards_trend:
+# Coral_Data :fish: :chart_with_upwards_trend:
 
-Creates tab-delimited .txt files of synthesized coral fossil oxygen isotope values and sea surface temperatures for input to Ager/Timer program. 
+**Coral_Data** is a Python toolset for simulating coral δ¹⁸O and sea surface temperature (SST) datasets, then building an age model and interpolating the δ¹⁸O record onto regular time steps.  
+It is designed for developing, testing, and demonstrating coral paleoclimate analysis workflows.
 
-### Installation
+---
 
-To install the program locally, first ensure you have Conda installed. Then, create and activate a new Conda environment with the required dependencies by running:
+## 📦 Installation
 
-# Step 1: Create and activate Conda environment
-``` bash
-conda create --name coral_data_env python=3.9 numpy pandas matplotlib -c conda-forge
+First ensure you have Conda installed. Then, create and activate a new Conda environment:
+
+```bash
+# Step 1: Create and activate a Conda environment
+conda create --name coral_data_env python=3.9 numpy pandas matplotlib scipy -c conda-forge
 conda activate coral_data_env
-```
+
 # Step 2: Clone the repository
-```
 git clone https://github.com/kaylatozier/coral_data.git
-cd coral_data  # Move into project directory
-```
+cd coral_data
+
 # Step 3: Install the package locally
-```
 pip install -e .
 ```
-# Step 4: Using the functions
 
-## Coral δ¹⁸O Dataset
+---
 
-Function: Generate a synthetic coral δ¹⁸O dataset with depth in mm.
+## 🚀 Available Scripts and Functions
 
-**Options:**
-| **Flag** | **Parameter**      | **Type**  | **Description** | **Default Values** |
-|----------|-------------------|-----------|------------------------------------------------|------------|
-| `-n`     | `core_depth`      | `int`     | Total depth of the coral core in mm (total number of samples with data). | 100 mm
-| `-t`     | `temp_trend`      | `float`   | The isotope warming trend.| -0.02 ppt per mm |
-| `-b`     | `baseline_d18o`   | `float`   | The baseline δ¹⁸O value. | -5 ppt |
-| `-l`     | `location`        | `str`     | Name of the location for labeling. | "Fake Coral Location" |
-| `-f`     | `filename`        | `str`     | Name of the output file to save the dataset. | "simulated_d18o_dataset.csv" |
+---
 
+### 1. Simulate Coral δ¹⁸O Dataset
 
-**Returns:** `df_d18o`: DataFrame with Depth (mm) and δ¹⁸O values.
-**Plots:** δ¹⁸O values vs. Depth (mm)
+Generates a synthetic coral δ¹⁸O record based on depth, seasonality, a warming trend, and noise.
 
-To generate a **coral δ¹⁸O dataset**, use:
-
+**Command-line Usage:**
 ```bash
-coral_data oxygen_isotopes [options] 
-
+python simulate.py [options]
 ```
 
-## SST Dataset
+**Options:**
 
-Function: Generate synthetic SST (Sea Surface Temperature) data over a given period with a warming trend.
+| Flag | Parameter | Type | Description | Default |
+|:----|:-----------|:----|:-------------|:--------|
+| `--core_depth` | Total depth of the coral core (mm) | `int` | Number of samples along core depth | `100` |
+| `--temp_trend` | Warming trend in δ¹⁸O per mm | `float` | Simulates secular climate trends | `-0.02` |
+| `--baseline_d18o` | Baseline δ¹⁸O value | `float` | Starting δ¹⁸O value (per mil, ‰) | `-5` |
+| `--location` | Location name | `str` | For plot labeling | `"Fake Coral Location"` |
+| `--d18o_filename` | Output file name for δ¹⁸O dataset | `str` | `"simulated_d18o_dataset.csv"` |
 
-**Options:** 
-| **Flag** | **Parameter**       | **Type**  | **Description** | **Default Values** |
-|----------|--------------------|-----------|--------------------------------------------|--------------|
-| `-n`     | `years`            | `int`     | Number of years of SST data. | 20 years |
-| `-t`     | `warming_trend`    | `float`   | Temperature increase per year (°C/year). | 0.02 °C/year |
-| `-b`     | `start_temp`       | `float`   | Starting average SST in degrees Celsius (°C). | 28 °C |
-| `-l`     | `location`         | `str`     | Location name for labeling. | "Fake Coral Location" |
-| `-f`     | `filename`         | `str`     | Name of the output file to save the dataset. | "simulated_sst_dataset.csv" |
+**Outputs:**
+- CSV file: Depth vs δ¹⁸O
+- Plot: δ¹⁸O vs Depth
 
+---
 
- **Returns:** `df_sst`: DataFrame with "Years Ago" and "SST (°C)".
- **Plots:** SST (°C) vs. Year
+### 2. Simulate SST Dataset
 
-To generate a **Sea Surface Temperature (SST) dataset**, use:
+Generates synthetic SST data with seasonal cycles, a warming trend, and noise.
 
+**Command-line Usage:**
 ```bash
-coral_data sst [options]
+python simulate.py [options]
+```
+*(runs along with δ¹⁸O generation)*
+
+**Options:**
+
+| Flag | Parameter | Type | Description | Default |
+|:----|:-----------|:----|:-------------|:--------|
+| `--years` | Number of years of SST data | `int` | Time span of the record | `20` |
+| `--warming_trend` | Warming rate per year | `float` | Long-term SST increase (°C/year) | `0.02` |
+| `--start_temp` | Starting SST (°C) | `float` | Initial sea surface temperature | `28` |
+| `--sst_filename` | Output file name for SST dataset | `str` | `"simulated_sst_dataset.csv"` |
+
+**Outputs:**
+- CSV file: Years Ago vs SST
+- Plot: SST vs Year
+
+---
+
+### 3. Build Age Model and Interpolate δ¹⁸O Time Series ("Ager")
+
+Constructs a linear age model tying δ¹⁸O depth data to SST years, interpolates to even time steps, and optionally plots results.
+
+**Command-line Usage:**
+```bash
+python Ager.py [options]
+```
+
+**Options:**
+
+| Flag | Parameter | Type | Description | Default |
+|:----|:-----------|:----|:-------------|:--------|
+| `--d18o` | Path to δ¹⁸O CSV file | `str` | Input δ¹⁸O dataset | `"simulated_d18o_dataset.csv"` |
+| `--sst` | Path to SST CSV file | `str` | Input SST dataset | `"simulated_sst_dataset.csv"` |
+| `--t0` | Start time (years ago) | `float` | Beginning of interpolation | **(required)** |
+| `--dt` | Time step interval (years) | `float` | Regular spacing | **(required)** |
+| `--output` | Output CSV for interpolated δ¹⁸O time series | `str` | **(required)** |
+| `--tiepoints_output` | Output CSV for age-depth tie points | `str` | `"age_model_tiepoints.csv"` |
+| `--plot` | Show plot immediately | `flag` | Displays figure | `False` |
+| `--plot_output` | Filename for saved plot | `str` | `"stacked_plot.png"` |
+
+**Outputs:**
+- CSV file: Interpolated δ¹⁸O Time Series
+- CSV file: Age-Depth Tie Points
+- PNG Plot: SST and δ¹⁸O stacked plot
+
+---
+
+## 📂 Input File Formatting Requirements for Ager.py (if inputting your own dataset)
+
+When using your own coral δ¹⁸O and SST datasets with `Ager.py`, make sure your CSV files follow the required formatting:
+
+### δ¹⁸O Dataset CSV (Example: `my_coral_data.csv`)
+
+| Column Name | Units | Description |
+|:------------|:------|:-------------|
+| `Depth (mm)` | millimeters | Depth along the coral core |
+| `d18o (per mil)` | per mil (‰) | Measured coral δ¹⁸O values at each depth |
+
+🔹 **Important:**
+- Column headers must exactly match `"Depth (mm)"` and `"d18o (per mil)"` (case sensitive).
+- Depth should increase downward.
+
+---
+
+### SST Dataset CSV (Example: `my_sst_data.csv`)
+
+| Column Name | Units | Description |
+|:------------|:------|:-------------|
+| `Years Ago` | years ago | Time before present (0 = present day) |
+| `SST (°C)` | degrees Celsius (°C) | Sea surface temperature |
+
+🔹 **Important:**
+- Column headers must exactly match `"Years Ago"` and `"SST (°C)"` (case sensitive).
+- "Years Ago" should increase backward in time.
+
+---
+
+### ⚠️ Notes
+
+- CSVs must use **commas** as delimiters.
+- Missing values (NaNs) are not allowed.
+- File encoding should be **UTF-8**.
+
+---
+
+## 🎯 Example Workflow
+
+Generate synthetic datasets:
+```bash
+python simulate.py --core_depth 120 --years 20
+```
+
+Then build an age model and interpolate:
+```bash
+python Ager.py --t0 0 --dt 0.1 --output interpolated_timeseries.csv --plot
+```
+
+---
+
+## Requirements
+
+- Python 3.9+
+- numpy
+- pandas
+- matplotlib
+- scipy
+
+*(All installed using Conda instructions above.)*
+
+---
+
+## Notes
+
+- Designed for testing coral paleoclimate analysis methods.
+- Randomness is seeded for reproducibility.
+- Seasonal cycles, warming trends, and noise are customizable.
+
+---
+
+# 🐚

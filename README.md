@@ -80,8 +80,8 @@ python simulate.py [options]
 ```bash
 python simulate.py --core_depth 150 --temp_trend -0.015 --baseline_d18o -4.7 --location "Fiji Coral Reef" --d18o_filename fiji_d18o.csv --years 25 --warming_trend 0.018 --start_temp 27.5 --sst_filename fiji_sst.csv
 ```
-**Example Breakdown:**
-**δ¹⁸O options:**
+
+**Example: δ¹⁸O options:**
 
 | Argument | Value | Meaning |
 |:---------|:------|:--------|
@@ -93,7 +93,7 @@ python simulate.py --core_depth 150 --temp_trend -0.015 --baseline_d18o -4.7 --l
 
 ---
 
-**SST options:**
+**Example: SST options:**
 
 | Argument | Value | Meaning |
 |:---------|:------|:--------|

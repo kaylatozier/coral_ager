@@ -104,6 +104,32 @@ python simulate.py --core_depth 150 --temp_trend -0.015 --baseline_d18o -4.7 --l
 
 ---
 
+### Example: Running Ager.py
+
+```bash
+python Ager.py --d18o fiji_d18o.csv --sst fiji_sst.csv --t0 0 --dt 0.1 --output fiji_interpolated_timeseries.csv --tiepoints_output fiji_tiepoints.csv --plot --plot_output fiji_plot.png
+```
+
+**Options:**
+
+| Argument | Value | Meaning |
+|:---------|:------|:--------|
+| `--d18o` | `fiji_d18o.csv` | Input δ¹⁸O dataset (from simulate.py or user data) |
+| `--sst` | `fiji_sst.csv` | Input SST dataset (from simulate.py or user data) |
+| `--t0` | `0` | Start time for interpolation (years ago) |
+| `--dt` | `0.1` | Time step interval (every 0.1 years) |
+| `--output` | `fiji_interpolated_timeseries.csv` | Save interpolated δ¹⁸O time series to this file |
+| `--tiepoints_output` | `fiji_tiepoints.csv` | Save anchor tiepoints (depth vs age) to this file |
+| `--plot` | *(flag)* | Display the stacked SST + δ¹⁸O plot immediately |
+| `--plot_output` | `fiji_plot.png` | Save the plot image to this file |
+
+**Outputs:**
+- CSV file: Interpolated δ¹⁸O time series (`fiji_interpolated_timeseries.csv`)
+- CSV file: Age-Depth Tie Points (`fiji_tiepoints.csv`)
+- PNG file: Stacked Plot (`fiji_plot.png`)
+
+---
+
 ### 3. Build Age Model and Interpolate δ¹⁸O Time Series ("Ager")
 
 Constructs a linear age model tying δ¹⁸O depth data to SST years, interpolates to even time steps, and optionally plots results.

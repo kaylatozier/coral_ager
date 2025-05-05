@@ -7,8 +7,8 @@ import pandas as pd
 import os
 import matplotlib.pyplot as plt
 
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "outputs") #output folder for csv files
- 
+output_dir = os.path.join(os.path.dirname(__file__), "outputs") #output folder for csv files
+
 def generate_sst_data(years=20, warming_trend=0.02, start_temp=28, location="Fake Coral Location", filename="simulated_sst_dataset.csv"):
     date_range = pd.date_range(end="2025-12-01", periods=years * 12, freq='MS')
     years_ago = np.linspace(0, years, num=len(date_range))
@@ -19,8 +19,8 @@ def generate_sst_data(years=20, warming_trend=0.02, start_temp=28, location="Fak
 
     df_sst = pd.DataFrame({
         "Years Ago": years_ago,
-        "SST (°C)": sst_values
-    })
+        "SST (°C)": sst_values})
+
     df_sst.to_csv(filename, index=False)
 
     plt.figure(figsize=(10, 5))
@@ -30,7 +30,7 @@ def generate_sst_data(years=20, warming_trend=0.02, start_temp=28, location="Fak
     plt.title(f"Simulated SST Data - {location}")
     plt.grid(True)
     plt.legend()
-    plot_path = os.path.join(OUTPUT_DIR, filename.replace(".csv", "_plot.png"))
+    plot_path = os.path.join(output_dir, filename.replace(".csv", "_plot.png"))
     plt.savefig(plot_path, dpi=300, bbox_inches='tight')
     plt.show()
 
@@ -42,13 +42,12 @@ def generate_coral_d18O_from_sst(sst_series, baseline=-5, temp_coeff=-0.23, nois
     """
     np.random.seed(42)
     noise = np.random.normal(0, noise_std, size=len(sst_series))
-    d18o_values = baseline + temp_coeff * sst_series + noise #using the SST to create a realistic d18O record so that they are tied
-    depth = np.arange(0, len(sst_series))  # Assuming 1 mm per month (12 mm/year)
+    d18o_values = baseline + temp_coeff * sst_series + noise # using the SST to create a realistic d18O record so that they are tied
+    depth = np.arange(0, len(sst_series))  # assuming 1 mm per month (12 mm/year)
 
     df_d18o = pd.DataFrame({
         "Depth (mm)": depth,
-        "d18o (per mil)": d18o_values
-    })
+        "d18o (per mil)": d18o_values})
 
     df_d18o.to_csv(filename, index=False)
 
@@ -61,7 +60,7 @@ def generate_coral_d18O_from_sst(sst_series, baseline=-5, temp_coeff=-0.23, nois
     plt.gca().invert_xaxis()
     plt.grid(True)
     plt.legend()
-    plot_path = os.path.join(OUTPUT_DIR, filename.replace(".csv", "_plot.png"))
+    plot_path = os.path.join(output_dir, filename.replace(".csv", "_plot.png"))
     plt.savefig(plot_path, dpi=300, bbox_inches='tight')
     plt.show()
 
@@ -80,16 +79,17 @@ def main():
     parser.add_argument("--sst_filename", type=str, default="simulated_sst_dataset.csv")
 
     # δ18O options
-    parser.add_argument("--baseline_d18o", type=float, default=-5)
-    parser.add_argument("--temp_coeff", type=float, default=-0.23, help="Temperature sensitivity of δ18O in ‰/°C")
-    parser.add_argument("--noise_std", type=float, default=0.1, help="Standard deviation of δ18O noise")
     parser.add_argument("--d18o_filename", type=str, default="simulated_d18o_dataset.csv")
 
     args = parser.parse_args()
 
-    sst_path = os.path.join(OUTPUT_DIR, args.sst_filename)
-    d18o_path = os.path.join(OUTPUT_DIR, args.d18o_filename)
-    
+    sst_path = os.path.join(output_dir, args.sst_filename)
+    d18o_path = os.path.join(output_dir, args.d18o_filename)
+
+    baseline_d18o = -4.7 # this will change to match the simulated SST starting temperature
+    temp_coeff = -0.23 #constant for a d18o and SST relationship (slope)
+    baseline = baseline_d18o - temp_coeff * args.start_temp #calculates baseline d18o based on the SST trends input
+
     # STEP 1: Generate SST
     df_sst = generate_sst_data(
         years=args.years,
@@ -103,9 +103,9 @@ def main():
     # STEP 2: Generate δ18O from SST
     df_d18o = generate_coral_d18O_from_sst(
         sst_series=df_sst["SST (°C)"].values,
-        baseline=args.baseline_d18o,
-        temp_coeff=args.temp_coeff,
-        noise_std=args.noise_std,
+        baseline=baseline,
+        temp_coeff=temp_coeff  ,
+        noise_std=0.1,
         location=args.location,
         filename=d18o_path)
     

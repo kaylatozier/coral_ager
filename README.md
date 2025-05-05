@@ -1,7 +1,6 @@
-# Coral_Data :fish: :chart_with_upwards_trend:
+# coral_ager:fish: :chart_with_upwards_trend:
 
-**Coral_Data** is a Python toolset for simulating coral δ¹⁸O and sea surface temperature (SST) datasets, then building an age model and interpolating the δ¹⁸O record onto regular time steps.  
-It is designed for developing, testing, and demonstrating coral paleoclimate analysis workflows.
+**coral_ager** is a Python toolset that can both simulate coral δ18O and sea surface temperature (SST) datasets or work with imported datasets and then builds an age model using SST tie points and interpolates a δ18O record onto regular time steps
 
 ---
 
@@ -11,12 +10,12 @@ First ensure you have Conda installed. Then, create and activate a new Conda env
 
 ```bash
 # Step 1: Create and activate a Conda environment
-conda create --name coral_data_env python=3.9 numpy pandas matplotlib scipy -c conda-forge
-conda activate coral_data_env
+conda create --name coral_ager_env python=3.9 numpy pandas matplotlib scipy -c conda-forge
+conda activate coral_ager_env
 
 # Step 2: Clone the repository
-git clone https://github.com/kaylatozier/coral_data.git
-cd coral_data
+git clone https://github.com/kaylatozier/coral_ager.git
+cd coral_ager
 
 # Step 3: Install the package locally
 pip install -e .
@@ -24,11 +23,13 @@ pip install -e .
 
 ---
 
-## 🚀 Available Scripts and Functions
+## Available Modules and Functions
 
 ---
 
-### 1. Simulate Coral δ¹⁸O Dataset
+### 1. simulate.py
+
+**Function 1: Simulate Coral δ¹⁸O Dataset**
 
 Generates a synthetic coral δ¹⁸O record based on depth, seasonality, a warming trend, and noise.
 
@@ -53,7 +54,7 @@ python simulate.py [options]
 
 ---
 
-### 2. Simulate SST Dataset
+**Function 2: Simulate SST Dataset**
 
 Generates synthetic SST data with seasonal cycles, a warming trend, and noise.
 
@@ -73,8 +74,8 @@ python simulate.py [options]
 | `--sst_filename` | Output file name for SST dataset | `str` | `"simulated_sst_dataset.csv"` |
 
 **Outputs:**
-- CSV file: Years Ago vs SST
-- Plot: SST vs Year
+- CSV file: Years Ago vs. SST
+- Plot: SST vs. Year
 
 **Example Command-Line Run:**
 ```bash
@@ -104,6 +105,32 @@ python simulate.py --core_depth 150 --temp_trend -0.015 --baseline_d18o -4.7 --l
 
 ---
 
+### 2. ager.py
+
+Constructs a linear age model tying δ¹⁸O depth data to SST years (from either simulate.py data or imported data), interpolates to even time steps, and optionally plots results.
+
+**Command-line Usage:**
+```bash
+python ager.py [options]
+```
+
+**Options:**
+
+| Flag | Parameter | Type | Description | Default |
+|:----|:-----------|:----|:-------------|:--------|
+| `--d18o` | Path to δ¹⁸O CSV file | `str` | Input δ¹⁸O dataset | `"simulated_d18o_dataset.csv"` |
+| `--sst` | Path to SST CSV file | `str` | Input SST dataset | `"simulated_sst_dataset.csv"` |
+| `--t0` | Start time (years ago) | `float` | Beginning of interpolation | **(required)** |
+| `--dt` | Time step interval (years) | `float` | Regular spacing | **(required)** |
+| `--output` | Output CSV for interpolated δ¹⁸O time series | `str` | **(required)** |
+| `--tiepoints_output` | Output CSV for age-depth tie points | `str` | `"age_model_tiepoints.csv"` |
+| `--plot` | Show plot immediately | `flag` | Displays figure | `False` |
+| `--plot_output` | Filename for saved plot | `str` | `"stacked_plot.png"` |
+
+**Outputs:**
+- CSV file: Interpolated δ¹⁸O Time Series
+- CSV file: Age-Depth Tie Points
+- PNG Plot: SST and δ¹⁸O stacked plot
 
 ### Example: Running ager.py
 
@@ -128,35 +155,6 @@ python ager.py --d18o fiji_d18o.csv --sst fiji_sst.csv --t0 0 --dt 0.1 --output 
 - CSV file: Interpolated δ¹⁸O time series (`fiji_interpolated_timeseries.csv`)
 - CSV file: Age-Depth Tie Points (`fiji_tiepoints.csv`)
 - PNG file: Stacked Plot (`fiji_plot.png`)
-
----
-
-### 3. Build Age Model and Interpolate δ¹⁸O Time Series ("Ager")
-
-Constructs a linear age model tying δ¹⁸O depth data to SST years, interpolates to even time steps, and optionally plots results.
-
-**Command-line Usage:**
-```bash
-python ager.py [options]
-```
-
-**Options:**
-
-| Flag | Parameter | Type | Description | Default |
-|:----|:-----------|:----|:-------------|:--------|
-| `--d18o` | Path to δ¹⁸O CSV file | `str` | Input δ¹⁸O dataset | `"simulated_d18o_dataset.csv"` |
-| `--sst` | Path to SST CSV file | `str` | Input SST dataset | `"simulated_sst_dataset.csv"` |
-| `--t0` | Start time (years ago) | `float` | Beginning of interpolation | **(required)** |
-| `--dt` | Time step interval (years) | `float` | Regular spacing | **(required)** |
-| `--output` | Output CSV for interpolated δ¹⁸O time series | `str` | **(required)** |
-| `--tiepoints_output` | Output CSV for age-depth tie points | `str` | `"age_model_tiepoints.csv"` |
-| `--plot` | Show plot immediately | `flag` | Displays figure | `False` |
-| `--plot_output` | Filename for saved plot | `str` | `"stacked_plot.png"` |
-
-**Outputs:**
-- CSV file: Interpolated δ¹⁸O Time Series
-- CSV file: Age-Depth Tie Points
-- PNG Plot: SST and δ¹⁸O stacked plot
 
 ---
 
@@ -188,16 +186,6 @@ When using your own coral δ¹⁸O and SST datasets with `ager.py`, make sure yo
 - Column headers must exactly match `"Years Ago"` and `"SST (°C)"` (case sensitive).
 - "Years Ago" should increase backward in time.
 
----
-
-### ⚠Notes
-
-- CSVs must use **commas** as delimiters.
-- Missing values (NaNs) are not allowed.
-- File encoding should be **UTF-8**.
-
----
-
 ## Example Workflow
 
 Generate synthetic datasets:
@@ -209,19 +197,6 @@ Then build an age model and interpolate:
 ```bash
 python ager.py --t0 0 --dt 0.1 --output interpolated_timeseries.csv --plot
 ```
-
----
-
-## Requirements
-
-- Python 3.9+
-- numpy
-- pandas
-- matplotlib
-- scipy
-
-*(All installed using Conda instructions above.)*
-
 ---
 
 ## Notes

@@ -76,7 +76,7 @@ When using your own coral δ¹⁸O and SST datasets with `ager.py`, make sure yo
 
 ### δ¹⁸O Dataset CSV (Example: `my_coral_data.csv`)
 
-| Column Name | Units | Description |
+| Column Name | Description |
 |:------------|:------|:-------------|
 | `Depth (mm)` | Depth along the coral core growth axis |
 | `d18o (per mil)` | Measured coral δ¹⁸O values at each depth |

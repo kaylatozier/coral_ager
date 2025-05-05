@@ -120,16 +120,21 @@ python ager.py [options]
 
 **Options:**
 
-|  Flag | Parameter | Type | Default |
-|:----|:-----------|:----|:--------|
-| `--d18o` | Path to δ¹⁸O CSV file | `str` | `"simulated_d18o_dataset.csv"` |
-| `--sst` | Path to SST CSV file | `str` | `"simulated_sst_dataset.csv"` |
-| `--t0` | Start time (years ago) | `float` |  **(required)** |
-| `--dt` | Time step interval (years) | `float` |  **(required)** |
-| `--output` | Output CSV for interpolated δ¹⁸O time series | `str` | **(required)** |
-| `--tiepoints_output` | Output CSV for age-depth tie points | `str` | `"age_model_tiepoints.csv"` |
-| `--plot` | Show plot immediately | `flag` | `False` |
-| `--plot_output` | Filename for saved plot | `str` | `"stacked_plot.png"` |
+### Command-Line Options for `ager.py`
+
+| Flag | Type | Description | Default |
+|------|------|-------------|---------|
+| `--d18o` | `str` | Path to δ¹⁸O input file | `simulated_d18o_dataset.csv` |
+| `--sst` | `str` | Path to SST input file | `simulated_sst_dataset.csv` |
+| `--dt` | `float` | Time step interval for interpolation (in years) | *(required)* |
+| `--output` | `str` | Path to save interpolated δ¹⁸O time series CSV | *(required)* |
+| `--tiepoints_output` | `str` | Path to save tie points CSV | `age_model_tiepoints.csv` |
+| `--plot_output` | `str` | Filename for saved stacked SST–δ¹⁸O plot | `stacked_plot.png` |
+| `--plot` | `flag` | Display plot window after saving | `False` |
+| `--check_anchors` | `flag` | Generate diagnostic plot showing tie points | `False` |
+| `--sst_spacing` | `int` | Minimum distance between detected SST peaks | `10` |
+| `--d18o_spacing` | `int` | Minimum distance between δ¹⁸O troughs | `6` |
+
 
 **Outputs:**
 - CSV file: Interpolated δ¹⁸O Time Series

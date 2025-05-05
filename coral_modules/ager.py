@@ -60,11 +60,6 @@ def pick_tie_points(df_d18o, df_sst, sst_spacing=10, d18o_spacing=6, sigma=2):
         "SST (°C)": df_sst.iloc[sst_indices]["SST (°C)"].values
     })
 
-    # Step 5: Evaluate tiepoints
-    evaluate_correlation(tiepoints_df)
-
-    return anchor_depths, anchor_ages, tiepoints_df, sst_indices, d18o_indices
-
 def plot_anchor_points(df_d18o, df_sst, sst_peaks, d18o_troughs, sigma=2, plotname=None): #forcing plotname to be the default beacuse it isn't working
     if plotname is None:
         plotname = os.path.join(output_dir, "tie_points_plot.png")

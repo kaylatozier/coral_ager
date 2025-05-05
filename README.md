@@ -1,4 +1,4 @@
-# coral_ager:fish: :chart_with_upwards_trend:
+# coral_ager :fish: :chart_with_upwards_trend:
 
 **coral_ager** is a Python toolset that can both simulate coral δ18O and sea surface temperature (SST) datasets or work with imported datasets and then builds an age model using SST tie points and interpolates a δ18O record onto regular time steps
 

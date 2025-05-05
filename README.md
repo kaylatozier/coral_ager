@@ -40,9 +40,9 @@ python simulate.py [options]
 
 **Options:**
 
-| Flag | Parameter | Type | Description | Default |
-|:----|:-----------|:----|:-------------|:--------|
-| `--location` | Location name | `str` | For plot labeling | `"Fake Coral Location"` |
+| Flag | Parameter | Type | Default |
+|:----|:-----------|:----|:--------|
+| `--location` | Location name | `str` | `"Fake Coral Location"` |
 | `--d18o_filename` | Output file name for δ¹⁸O dataset | `str` | `"simulated_d18o_dataset.csv"` |
 
 **Outputs:**
@@ -78,60 +78,6 @@ python simulate.py [options]
 ```bash
 python simulate.py --baseline_d18o -4.7 --location "Fiji Coral Reef" --d18o_filename fiji_d18o.csv --years 25 --warming_trend 0.018 --start_temp 27.5 --sst_filename fiji_sst.csv
 ```
----
-
-### 2. ager.py
-
-Constructs a linear age model tying δ¹⁸O depth data to SST years (from either simulate.py data or imported data), interpolates to even time steps, and optionally plots results.
-
-**Command-line Usage:**
-```bash
-python ager.py [options]
-```
-
-**Options:**
-
-| Flag | Parameter | Type | Description | Default |
-|:----|:-----------|:----|:-------------|:--------|
-| `--d18o` | Path to δ¹⁸O CSV file | `str` | Input δ¹⁸O dataset | `"simulated_d18o_dataset.csv"` |
-| `--sst` | Path to SST CSV file | `str` | Input SST dataset | `"simulated_sst_dataset.csv"` |
-| `--t0` | Start time (years ago) | `float` | Beginning of interpolation | **(required)** |
-| `--dt` | Time step interval (years) | `float` | Regular spacing | **(required)** |
-| `--output` | Output CSV for interpolated δ¹⁸O time series | `str` | **(required)** |
-| `--tiepoints_output` | Output CSV for age-depth tie points | `str` | `"age_model_tiepoints.csv"` |
-| `--plot` | Show plot immediately | `flag` | Displays figure | `False` |
-| `--plot_output` | Filename for saved plot | `str` | `"stacked_plot.png"` |
-
-**Outputs:**
-- CSV file: Interpolated δ¹⁸O Time Series
-- CSV file: Age-Depth Tie Points
-- PNG Plot: SST and δ¹⁸O stacked plot
-
-### Example: Running ager.py
-
-```bash
-python ager.py --d18o fiji_d18o.csv --sst fiji_sst.csv --t0 0 --dt 0.1 --output fiji_interpolated_timeseries.csv --tiepoints_output fiji_tiepoints.csv --plot --plot_output fiji_plot.png
-```
-
-**Options:**
-
-| Argument | Value | Meaning |
-|:---------|:------|:--------|
-| `--d18o` | `fiji_d18o.csv` | Input δ¹⁸O dataset (from simulate.py or user data) |
-| `--sst` | `fiji_sst.csv` | Input SST dataset (from simulate.py or user data) |
-| `--t0` | `0` | Start time for interpolation (years ago) |
-| `--dt` | `0.1` | Time step interval (every 0.1 years) |
-| `--output` | `fiji_interpolated_timeseries.csv` | Save interpolated δ¹⁸O time series to this file |
-| `--tiepoints_output` | `fiji_tiepoints.csv` | Save anchor tiepoints (depth vs age) to this file |
-| `--plot` | *(flag)* | Display the stacked SST + δ¹⁸O plot immediately |
-| `--plot_output` | `fiji_plot.png` | Save the plot image to this file |
-
-**Outputs:**
-- CSV file: Interpolated δ¹⁸O time series (`fiji_interpolated_timeseries.csv`)
-- CSV file: Age-Depth Tie Points (`fiji_tiepoints.csv`)
-- PNG file: Stacked Plot (`fiji_plot.png`)
-
----
 
 ## 📂 Input File Formatting Requirements for ager.py (if inputting your own dataset)
 
@@ -161,11 +107,53 @@ When using your own coral δ¹⁸O and SST datasets with `ager.py`, make sure yo
 - Column headers must exactly match `"Years Ago"` and `"SST (°C)"` (case sensitive).
 - "Years Ago" should increase backward in time.
 
+---
+
+### 2. ager.py
+
+Constructs a linear age model tying δ¹⁸O depth data to SST years (from either simulate.py data or imported data), interpolates to even time steps, and optionally plots results.
+
+**Command-line Usage:**
+```bash
+python ager.py [options]
+```
+
+**Options:**
+
+|  Flag | Parameter | Type | Default |
+|:----|:-----------|:----|:--------|
+| `--d18o` | Path to δ¹⁸O CSV file | `str` | `"simulated_d18o_dataset.csv"` |
+| `--sst` | Path to SST CSV file | `str` | `"simulated_sst_dataset.csv"` |
+| `--t0` | Start time (years ago) | `float` |  **(required)** |
+| `--dt` | Time step interval (years) | `float` |  **(required)** |
+| `--output` | Output CSV for interpolated δ¹⁸O time series | `str` | **(required)** |
+| `--tiepoints_output` | Output CSV for age-depth tie points | `str` | `"age_model_tiepoints.csv"` |
+| `--plot` | Show plot immediately | `flag` | `False` |
+| `--plot_output` | Filename for saved plot | `str` | `"stacked_plot.png"` |
+
+**Outputs:**
+- CSV file: Interpolated δ¹⁸O Time Series
+- CSV file: Age-Depth Tie Points
+- PNG Plot: SST and δ¹⁸O stacked plot
+
+### Example: Running ager.py
+
+```bash
+python ager.py --d18o fiji_d18o.csv --sst fiji_sst.csv --t0 0 --dt 0.1 --output fiji_interpolated_timeseries.csv --tiepoints_output fiji_tiepoints.csv --plot --plot_output fiji_plot.png
+
+```
+**Outputs:**
+- CSV file: Interpolated δ¹⁸O time series (`fiji_interpolated_timeseries.csv`)
+- CSV file: Age-Depth Tie Points (`fiji_tiepoints.csv`)
+- PNG file: Stacked Plot (`fiji_plot.png`)
+
+---
+
 ## Example Workflow
 
 Generate synthetic datasets:
 ```bash
-python simulate.py --core_depth 120 --years 20
+python simulate.py --location "American Samoa" --years 30 --start_temp 28 
 ```
 
 Then build an age model and interpolate:

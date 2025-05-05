@@ -65,11 +65,11 @@ python simulate.py [options]
 
 **Options:**
 
-| Flag | Parameter | Type | Description | Default |
-|:----|:-----------|:----|:-------------|:--------|
-| `--years` | Number of years of SST data | `int` | Time span of the record | `20` |
-| `--warming_trend` | Warming rate per year | `float` | Long-term SST increase (°C/year) | `0.02` |
-| `--start_temp` | Starting SST (°C) | `float` | Initial sea surface temperature | `28` |
+| Flag | Parameter | Type | Default |
+|:----|:-----------|:----|:--------|
+| `--years` | Number of years of SST data | `int` | `20` |
+| `--warming_trend` | Warming rate per year | `float` | `0.02` |
+| `--start_temp` | Starting SST (°C) | `float` | `28` |
 | `--sst_filename` | Output file name for SST dataset | `str` | `"simulated_sst_dataset.csv"` |
 
 **Outputs:**

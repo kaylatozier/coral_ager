@@ -42,15 +42,12 @@ python simulate.py [options]
 
 | Flag | Parameter | Type | Description | Default |
 |:----|:-----------|:----|:-------------|:--------|
-| `--core_depth` | Total depth of the coral core (mm) | `int` | Number of samples along core depth | `100` |
-| `--temp_trend` | Warming trend in δ¹⁸O per mm | `float` | Simulates secular climate trends | `-0.02` |
-| `--baseline_d18o` | Baseline δ¹⁸O value | `float` | Starting δ¹⁸O value (per mil, ‰) | `-5` |
 | `--location` | Location name | `str` | For plot labeling | `"Fake Coral Location"` |
 | `--d18o_filename` | Output file name for δ¹⁸O dataset | `str` | `"simulated_d18o_dataset.csv"` |
 
 **Outputs:**
-- CSV file: Depth vs δ¹⁸O
-- Plot: δ¹⁸O vs Depth
+- CSV file: δ¹⁸O vs. Depth
+- Plot: δ¹⁸O vs. Depth
 
 ---
 
@@ -74,35 +71,13 @@ python simulate.py [options]
 | `--sst_filename` | Output file name for SST dataset | `str` | `"simulated_sst_dataset.csv"` |
 
 **Outputs:**
-- CSV file: Years Ago vs. SST
-- Plot: SST vs. Year
+- CSV file: SST vs. Years Ago
+- Plot: SST vs. Years Ago
 
 **Example Command-Line Run:**
 ```bash
-python simulate.py --core_depth 150 --temp_trend -0.015 --baseline_d18o -4.7 --location "Fiji Coral Reef" --d18o_filename fiji_d18o.csv --years 25 --warming_trend 0.018 --start_temp 27.5 --sst_filename fiji_sst.csv
+python simulate.py --baseline_d18o -4.7 --location "Fiji Coral Reef" --d18o_filename fiji_d18o.csv --years 25 --warming_trend 0.018 --start_temp 27.5 --sst_filename fiji_sst.csv
 ```
-
-**Example: δ¹⁸O options:**
-
-| Argument | Value | Meaning |
-|:---------|:------|:--------|
-| `--core_depth` | `150` | Coral core is 150 mm long |
-| `--temp_trend` | `-0.015` | Slight warming (δ¹⁸O decreasing) with depth |
-| `--baseline_d18o` | `-4.7` | Starting δ¹⁸O value at surface |
-| `--location` | `Fiji Coral Reef` | Label for plots |
-| `--d18o_filename` | `fiji_d18o.csv` | Save δ¹⁸O dataset to this file |
-
----
-
-**Example: SST options:**
-
-| Argument | Value | Meaning |
-|:---------|:------|:--------|
-| `--years` | `25` | Simulate SST over 25 years |
-| `--warming_trend` | `0.018` | SST warming 0.018 °C per year |
-| `--start_temp` | `27.5` | Starting SST = 27.5 °C |
-| `--sst_filename` | `fiji_sst.csv` | Save SST dataset to this file |
-
 ---
 
 ### 2. ager.py

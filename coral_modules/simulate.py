@@ -36,12 +36,12 @@ def generate_sst_data(years=20, warming_trend=0.02, start_temp=28, location="Fak
 
     return df_sst
 
-def generate_coral_d18O_from_sst(sst_series, baseline=-5, temp_coeff=-0.23, noise_std=0.1, location="Simulated Coral Site", filename="simulated_d18o_dataset.csv"):
+def generate_coral_d18O_from_sst(sst_series, baseline=-5, temp_coeff=-0.23, location="Simulated Coral Site", filename="simulated_d18o_dataset.csv"):
     """
     Generate δ¹⁸O values based on SST (inversely related) and save as a DataFrame.
     """
     np.random.seed(42)
-    noise = np.random.normal(0, noise_std, size=len(sst_series))
+    noise = np.random.normal(0, 0.1, size=len(sst_series))
     d18o_values = baseline + temp_coeff * sst_series + noise # using the SST to create a realistic d18O record so that they are tied
     depth = np.arange(0, len(sst_series))  # assuming 1 mm per month (12 mm/year)
 
@@ -86,10 +86,6 @@ def main():
     sst_path = os.path.join(output_dir, args.sst_filename)
     d18o_path = os.path.join(output_dir, args.d18o_filename)
 
-    baseline_d18o = -4.7 # this will change to match the simulated SST starting temperature
-    temp_coeff = -0.23 #constant for a d18o and SST relationship (slope)
-    baseline = baseline_d18o - temp_coeff * args.start_temp #calculates baseline d18o based on the SST trends input
-
     # STEP 1: Generate SST
     df_sst = generate_sst_data(
         years=args.years,
@@ -103,9 +99,8 @@ def main():
     # STEP 2: Generate δ18O from SST
     df_d18o = generate_coral_d18O_from_sst(
         sst_series=df_sst["SST (°C)"].values,
-        baseline=baseline,
-        temp_coeff=temp_coeff  ,
-        noise_std=0.1,
+        baseline=-5,
+        temp_coeff=-0.23  ,
         location=args.location,
         filename=d18o_path)
     

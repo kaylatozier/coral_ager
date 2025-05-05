@@ -10,81 +10,121 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.signal import detrend, find_peaks
 from scipy.interpolate import interp1d
+from scipy.ndimage import gaussian_filter1d
+from scipy.stats import pearsonr
 import os
 import sys
 
-def load_isotope_data(filepath):
-    return pd.read_csv(filepath)
+output_dir = os.path.join(os.path.dirname(__file__), "outputs") #output folder for csv files
+os.makedirs(output_dir, exist_ok=True)
 
-def load_sst_data(filepath):
-    return pd.read_csv(filepath)
 
-def pick_tie_points(df_d18o, df_sst, anchor_side="sst_peaks", sst_spacing=10, d18o_spacing=6):
+def load_input_data(args):
+    df_d18o = pd.read_csv(args.d18o, encoding='utf-8')
+    df_sst = pd.read_csv(args.sst, encoding='utf-8')
+    return df_d18o, df_sst
+
+def evaluate_correlation(tiepoints_df):
+    """Calculate Pearson correlation between SST and δ18O tie points."""
+    from scipy.stats import pearsonr
+    sst = tiepoints_df["SST (°C)"]
+    d18o = tiepoints_df["d18o (per mil)"]
+    corr, pval = pearsonr(sst, d18o)
+    print(f"SST–δ18O correlation: r = {corr:.2f}, p = {pval:.3g}")
+    return corr, pval
+
+def pick_tie_points(df_d18o, df_sst, sst_spacing=10, d18o_spacing=6, sigma=2):
     """Pick tie points by matching SST peaks to δ18O troughs (inverse relationship)."""
 
-    # Step 1: Normalize both datasets
-    df_d18o["detrended"] = detrend(df_d18o["d18o (per mil)"])
-    df_sst["detrended"] = detrend(df_sst["SST (°C)"])
-    df_d18o["normalized"] = (df_d18o["d18o (per mil)"] - df_d18o["d18o (per mil)"].mean()) / df_d18o["d18o (per mil)"].std()
-    df_sst["normalized"] = (df_sst["SST (°C)"] - df_sst["SST (°C)"].mean()) / df_sst["SST (°C)"].std()
+    # Step 1: Smooth the raw data
+    sst_smooth = gaussian_filter1d(df_sst["SST (°C)"].values, sigma=sigma)
+    d18o_smooth = gaussian_filter1d(df_d18o["d18o (per mil)"].values, sigma=sigma)
 
-    # Step 2: Detect peaks and troughs for SUMMERTIME (more important because this is when corals grow most)
-    sst_peaks, _ = find_peaks(df_sst["normalized"], distance=d18o_spacing)  # high SST
-    d18o_troughs, _ = find_peaks(-df_d18o["normalized"], distance=sst_spacing)  # low δ18O
+    # Step 2: Find peaks and troughs
+    sst_peaks, _ = find_peaks(sst_smooth, distance=sst_spacing)
+    d18o_troughs, _ = find_peaks(-d18o_smooth, distance=d18o_spacing)
 
-    # Step 3: Sort and match in order
+    # Step 3: Match in order (minimum number of peaks found in both)
     num_tiepoints = min(len(sst_peaks), len(d18o_troughs))
-    anchor_ages = df_sst.iloc[sst_peaks]["Years Ago"].values[:num_tiepoints]
-    anchor_depths = df_d18o.iloc[d18o_troughs]["Depth (mm)"].values[:num_tiepoints]
+    sst_indices = sst_peaks[:num_tiepoints]
+    d18o_indices = d18o_troughs[:num_tiepoints]
 
-    # Step 4: Save selected tiepoints
+    anchor_ages = df_sst.iloc[sst_indices]["Years Ago"].values
+    anchor_depths = df_d18o.iloc[d18o_indices]["Depth (mm)"].values
+
+    # Step 4: Build tiepoint DataFrame
     tiepoints_df = pd.DataFrame({
         "Depth (mm)": anchor_depths,
         "Age (Years Ago)": anchor_ages,
-        "d18O (per mil)": df_d18o.iloc[d18o_troughs]["d18o (per mil)"].values[:num_tiepoints],
-        "SST (°C)": df_sst.iloc[sst_peaks]["SST (°C)"].values[:num_tiepoints]
+        "d18o (per mil)": df_d18o.iloc[d18o_indices]["d18o (per mil)"].values,
+        "SST (°C)": df_sst.iloc[sst_indices]["SST (°C)"].values
     })
 
-    return anchor_depths, anchor_ages, tiepoints_df
+    # Step 5: Evaluate tiepoints
+    evaluate_correlation(tiepoints_df)
 
-def plot_anchor_points(df_d18o, df_sst, anchor_depths, anchor_ages, plotname="anchor_points_check.png"):
+    return anchor_depths, anchor_ages, tiepoints_df, sst_indices, d18o_indices
+
+def plot_anchor_points(df_d18o, df_sst, sst_peaks, d18o_troughs, sigma=2, plotname=None): #forcing plotname to be the default beacuse it isn't working
+    if plotname is None:
+        plotname = os.path.join(output_dir, "tie_points_plot.png")
+    # Smooth the arrays
+    sst_array = df_sst["SST (°C)"].values
+    d18o_array = df_d18o["d18o (per mil)"].values
+    sst_smooth = gaussian_filter1d(sst_array, sigma=sigma)
+    d18o_smooth = gaussian_filter1d(d18o_array, sigma=sigma)
+
     fig, axes = plt.subplots(2, 1, figsize=(10, 10))
 
-    # Plot δ18O vs Depth with anchor points
-    axes[0].plot(df_d18o["Depth (mm)"], df_d18o["d18o (per mil)"], label="δ¹⁸O", color='black')
-    axes[0].scatter(anchor_depths, df_d18o.set_index("Depth (mm)").loc[anchor_depths]["d18o (per mil)"], color='red', label="Tie Points")
+    # δ18O vs depth
+    axes[0].plot(df_d18o["Depth (mm)"], d18o_smooth, label="Smoothed δ¹⁸O", color='gray')
+    axes[0].scatter(df_d18o["Depth (mm)"].values[d18o_troughs], d18o_smooth[d18o_troughs],
+                    color='red', label="δ¹⁸O Tie Points")
     axes[0].invert_xaxis()
     axes[0].set_xlabel("Depth (mm)")
     axes[0].set_ylabel("δ¹⁸O (‰)")
-    axes[0].set_title("δ¹⁸O vs Depth with Anchor Points")
+    axes[0].set_title("δ¹⁸O vs Depth with Troughs")
     axes[0].legend()
     axes[0].grid(True)
 
-    # Plot SST vs Years Ago with anchor points
-    axes[1].plot(df_sst["Years Ago"], df_sst["SST (°C)"], label="SST", color='blue')
-    axes[1].scatter(anchor_ages, df_sst.set_index("Years Ago").loc[anchor_ages]["SST (°C)"], color='red', label="Tie Points")
+    # SST vs time
+    axes[1].plot(df_sst["Years Ago"], sst_smooth, label="Smoothed SST", color='lightblue')
+    axes[1].scatter(df_sst["Years Ago"].values[sst_peaks], sst_smooth[sst_peaks],
+                    color='red', label="SST Tie Points")
+    axes[1].invert_xaxis()
     axes[1].set_xlabel("Years Ago")
     axes[1].set_ylabel("SST (°C)")
-    axes[1].set_title("SST vs Years Ago with Anchor Points")
+    axes[1].set_title("SST vs Years Ago with Peaks")
     axes[1].legend()
     axes[1].grid(True)
-
     plt.tight_layout()
-    plt.savefig(plotname)
-    print(f"[INFO] Saved anchor point diagnostic plot to {plotname}")
+    plt.savefig(plotname, dpi=300)
     plt.show()
 
 
 def apply_age_model(df_d18o, anchor_depths, anchor_ages):
     """Apply linear interpolation to build full age model."""
-    interp_func = interp1d(anchor_depths, anchor_ages, kind='linear', fill_value='extrapolate')
+    sort_idx = np.argsort(anchor_depths)
+    sorted_depths = np.array(anchor_depths)[sort_idx]
+    sorted_ages = np.array(anchor_ages)[sort_idx]
+
+    interp_func = interp1d(sorted_depths, sorted_ages, kind='linear', fill_value='extrapolate')
     df_d18o["age_model"] = interp_func(df_d18o["Depth (mm)"])
     return df_d18o
 
-def interpolate_to_regular_timeseries(df_d18o, t0, dt):
-    """Interpolate δ18O onto regular time steps."""
-    even_time = np.arange(t0, df_d18o["age_model"].max(), dt)
-    even_d18o = np.interp(even_time, df_d18o["age_model"], df_d18o["d18o (per mil)"])
+def interpolate_to_regular_timeseries(df_d18o):
+    """Interpolate δ18O onto regular time steps with automatic dt."""
+    df_sorted = df_d18o.sort_values("age_model")
+    ages = df_sorted["age_model"].values
+    d18o_values = df_sorted["d18o (per mil)"].values
+
+    # Automatically estimate dt from median spacing
+    dt = np.median(np.diff(np.sort(ages)))
+
+    # Create interpolated time series
+    even_time = np.arange(np.min(ages), np.max(ages), dt)
+    even_d18o = np.interp(even_time, ages, d18o_values)
+
     return even_time, even_d18o
 
 def make_plot(df_d18o, df_sst, output_plot):
@@ -106,55 +146,33 @@ def make_plot(df_d18o, df_sst, output_plot):
 
     plt.title("Stacked Coral Age Model Plot")
     fig.tight_layout()
-    plt.savefig(output_plot)
+    plt.savefig(output_plot, dpi=300, bbox_inches='tight')    
     print(f"Saved plot to {output_plot}")
 
     return fig, ax1, ax2
-
-def validate_columns(df, required_columns, file_label):
-    missing = [col for col in required_columns if col not in df.columns]
-    if missing:
-        print(f"[ERROR] {file_label} is missing required columns: {', '.join(missing)}")
-        sys.exit(1)
 
 def main():
     parser = argparse.ArgumentParser(description="Build age model and interpolate coral δ18O data to regular time steps.")
     parser.add_argument('--d18o', default="simulated_d18o_dataset.csv", help="Path to δ18O input file")
     parser.add_argument('--sst', default="simulated_sst_dataset.csv", help="Path to SST input file")
-    parser.add_argument('--t0', type=float, required=True, help="Start time (in years ago)")
-    parser.add_argument('--dt', type=float, required=True, help="Time step interval (in years)")
-    parser.add_argument('--output', required=True, help="Path to save interpolated time series")
+    parser.add_argument('--output', default="interpolated_output.csv", help="Path to save interpolated time series")
     parser.add_argument('--tiepoints_output', default="age_model_tiepoints.csv", help="Path to save tie points CSV")
-    parser.add_argument('--plot', action='store_true', help="If set, show a plot of the results")
-    parser.add_argument('--plot_output', default="stacked_plot.png", help="Filename for saved plot")
-    parser.add_argument('--check_anchors', action='store_true', help="Show a diagnostic plot of selected tie points on d18O and SST.")
+    parser.add_argument('--check_anchors', action='store_true', help="Show a diagnostic plot of selected tie points on d18o and SST.")
     parser.add_argument('--sst_spacing', type=int, default=10, help="Minimum spacing between SST peaks (default: 10)")
     parser.add_argument('--d18o_spacing', type=int, default=6, help="Minimum spacing between δ18O troughs (default: 6)")
-
+    parser.add_argument('--plot', action='store_true', help="If set, show the plot interactively after saving.")
+    
     args = parser.parse_args()
 
-    # Check if input files exist
-    if not os.path.exists(args.d18o):
-        print(f"[ERROR] δ18O input file not found: {args.d18o}")
-        sys.exit(1)
-    if not os.path.exists(args.sst):
-        print(f"[ERROR] SST input file not found: {args.sst}")
-        sys.exit(1)
-
-    # Load datasets
-    df_d18o = load_isotope_data(args.d18o)
-    df_sst = load_sst_data(args.sst)
-
-    # Validate required columns
-    validate_columns(df_d18o, ["Depth (mm)", "d18o (per mil)"], "δ18O file")
-    validate_columns(df_sst, ["Years Ago", "SST (°C)"], "SST file")
+    df_d18o, df_sst = load_input_data(args)
 
     # Pick tie points
-    anchor_depths, anchor_ages, tiepoints_df = pick_tie_points(
+    sigma = 2
+    anchor_depths, anchor_ages, tiepoints_df, sst_peaks, d18o_troughs = pick_tie_points(
     df_d18o, df_sst,
     sst_spacing=args.sst_spacing,
-    d18o_spacing=args.d18o_spacing)
-
+    d18o_spacing=args.d18o_spacing,
+    sigma=sigma)
 
     # Save tiepoints
     tiepoints_df.to_csv(args.tiepoints_output, index=False)
@@ -164,25 +182,28 @@ def main():
     df_d18o = apply_age_model(df_d18o, anchor_depths, anchor_ages)
 
     # Interpolate to regular time series
-    even_time, even_d18o = interpolate_to_regular_timeseries(df_d18o, args.t0, args.dt)
+    even_time, even_d18o = interpolate_to_regular_timeseries(df_d18o)
 
     # Save interpolated series
     output_df = pd.DataFrame({
-        "Age (Years Ago)": even_time,
-        "d18O (per mil)": even_d18o
-    })
-    output_df.to_csv(args.output, index=False)
-    print(f"Saved interpolated time series to {args.output}")
+    "Age (Years Ago)": even_time,
+    "d18O (per mil)": even_d18o})
 
-    # Create and optionally display plot
-    fig, ax1, ax2 = make_plot(df_d18o, df_sst, args.plot_output)
+    interpolated_path = os.path.join(output_dir, args.output)
+    output_df.to_csv(interpolated_path, index=False)
+    print(f"Saved interpolated time series to {interpolated_path}")
 
+    # Save age_model-enhanced δ18O dataset
+    age_model_path = os.path.join(output_dir, "d18o_with_age_model.csv")
+    df_d18o.to_csv(age_model_path, index=False)
+    print(f"Saved d18O data with age model to {age_model_path}")
+
+    plot_path = os.path.join(output_dir, "stacked_plot.png")
+    fig, ax1, ax2 = make_plot(df_d18o, df_sst, plot_path)
     if args.plot:
         plt.show()
-
     if args.check_anchors:
-        plot_anchor_points(df_d18o, df_sst, anchor_depths, anchor_ages)
-
+        plot_anchor_points(df_d18o, df_sst, sst_peaks, d18o_troughs, plotname=os.path.join(output_dir, "tie_points_plot.png"))
 
 if __name__ == "__main__":
     main()

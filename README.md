@@ -1,6 +1,6 @@
 # coral_ager :fish: :chart_with_upwards_trend:
 
-**coral_ager** is a Python toolset that can both simulate coral δ18O and sea surface temperature (SST) datasets or work with imported datasets and then builds a linear age model using SST tie points matched to δ¹⁸O troughs, interpolating the δ¹⁸O record onto evenly spaced time steps.
+**coral_ager** is a Python toolset that can both simulate coral δ18O and sea surface temperature (SST) datasets or work with imported datasets  and then builds a linear age model using SST tie points matched to δ¹⁸O troughs, interpolating the δ¹⁸O record onto evenly spaced time steps.
 
 ---
 
@@ -77,7 +77,7 @@ When using your own coral δ¹⁸O and SST datasets with `ager.py`, make sure yo
 ### δ¹⁸O Dataset CSV (Example: `my_coral_data.csv`)
 
 | Column Name | Description |
-|:------------|:------|:-------------|
+|:------------|:-------------|
 | `Depth (mm)` | Depth along the coral core growth axis |
 | `d18o (per mil)` | Measured coral δ¹⁸O values at each depth |
 
@@ -90,7 +90,7 @@ When using your own coral δ¹⁸O and SST datasets with `ager.py`, make sure yo
 ### SST Dataset CSV (Example: `my_sst_data.csv`)
 
 | Column Name | Description |
-|:------------|:------|:-------------|
+|:------------|:-------------|
 | `Years Ago` | Time before present (0 = present day) |
 | `SST (°C)` | Sea surface temperature |
 

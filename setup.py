@@ -8,7 +8,7 @@ from setuptools import setup
 
 # build command
 setup(
-    name="coral_data",
+    name="coral_ager",
     version="0.0.1",
     author="Kayla Tozier",
     author_email="kmt2183@columbia.edu",
@@ -16,6 +16,6 @@ setup(
     description="A package for creating toy datasets for Ager/Timer inputs",
     classifiers=["Programming Language :: Python :: 3"],
     entry_points={
-        "console_scripts": ["coral_data = coral_data.__main__:main"]
+        "console_scripts": ["coral_ager = coral_ager.__main__:main"]
     },
 )

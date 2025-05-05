@@ -10,7 +10,7 @@ First ensure you have Conda installed. Then, create and activate a new Conda env
 
 ```bash
 # Step 1: Create and activate a Conda environment
-conda create --name coral_ager_env python=3.9 numpy pandas matplotlib scipy -c conda-forge
+conda create --name coral_ager_env python=3.9 numpy pandas matplotlib scipy os -c conda-forge
 conda activate coral_ager_env
 
 # Step 2: Clone the repository

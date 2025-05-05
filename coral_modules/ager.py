@@ -16,8 +16,6 @@ import os
 import sys
 
 output_dir = os.path.join(os.path.dirname(__file__), "outputs") #output folder for csv files
-os.makedirs(output_dir, exist_ok=True)
-
 
 def load_input_data(args):
     df_d18o = pd.read_csv(args.d18o, encoding='utf-8')
@@ -59,6 +57,8 @@ def pick_tie_points(df_d18o, df_sst, sst_spacing=10, d18o_spacing=6, sigma=2):
         "d18o (per mil)": df_d18o.iloc[d18o_indices]["d18o (per mil)"].values,
         "SST (°C)": df_sst.iloc[sst_indices]["SST (°C)"].values
     })
+
+    return anchor_depths, anchor_ages, tiepoints_df, sst_peaks, d18o_troughs
 
 def plot_anchor_points(df_d18o, df_sst, sst_peaks, d18o_troughs, sigma=2, plotname=None): #forcing plotname to be the default beacuse it isn't working
     if plotname is None:
@@ -169,9 +169,10 @@ def main():
     d18o_spacing=args.d18o_spacing,
     sigma=sigma)
 
-    # Save tiepoints
-    tiepoints_df.to_csv(args.tiepoints_output, index=False)
-    print(f"Saved tiepoints to {args.tiepoints_output}")
+    # Save tiepoints to outputs folder
+    tiepoints_path = os.path.join(output_dir, args.tiepoints_output)
+    tiepoints_df.to_csv(tiepoints_path, index=False)
+    print(f"Saved tiepoints to {tiepoints_path}")
 
     # Build and apply age model
     df_d18o = apply_age_model(df_d18o, anchor_depths, anchor_ages)
@@ -188,15 +189,11 @@ def main():
     output_df.to_csv(interpolated_path, index=False)
     print(f"Saved interpolated time series to {interpolated_path}")
 
-    # Save age_model-enhanced δ18O dataset
-    age_model_path = os.path.join(output_dir, "d18o_with_age_model.csv")
-    df_d18o.to_csv(age_model_path, index=False)
-    print(f"Saved d18O data with age model to {age_model_path}")
-
     plot_path = os.path.join(output_dir, "stacked_plot.png")
     fig, ax1, ax2 = make_plot(df_d18o, df_sst, plot_path)
     if args.plot:
         plt.show()
+
     if args.check_anchors:
         plot_anchor_points(df_d18o, df_sst, sst_peaks, d18o_troughs, plotname=os.path.join(output_dir, "tie_points_plot.png"))
 

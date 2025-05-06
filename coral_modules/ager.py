@@ -148,8 +148,10 @@ def make_plot(df_d18o, df_sst, output_plot):
 
 def main():
     parser = argparse.ArgumentParser(description="Build age model and interpolate coral δ18O data to regular time steps.")
-    parser.add_argument('--d18o', default="simulated_d18o_dataset.csv", help="Path to δ18O input file")
-    parser.add_argument('--sst', default="simulated_sst_dataset.csv", help="Path to SST input file")
+    default_d18o_path = os.path.join(output_dir, "simulated_d18o_dataset.csv")
+    default_sst_path = os.path.join(output_dir, "simulated_sst_dataset.csv")
+    parser.add_argument('--d18o', default=default_d18o_path, help="Path to δ18O input file")
+    parser.add_argument('--sst', default=default_sst_path, help="Path to SST input file")
     parser.add_argument('--output', default="interpolated_output.csv", help="Path to save interpolated time series")
     parser.add_argument('--tiepoints_output', default="age_model_tiepoints.csv", help="Path to save tie points CSV")
     parser.add_argument('--check_anchors', action='store_true', help="Show a diagnostic plot of selected tie points on d18o and SST.")

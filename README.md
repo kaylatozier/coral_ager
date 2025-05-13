@@ -121,11 +121,6 @@ Input δ18O by depth     Input SST by age
         ↳ age_depth_tiepoints.csv
         ↳ plots (optional)
 
-**Command-line Usage:**
-```bash
-python ager.py [options]
-```
-
 **Options:**
 
 ### Command-Line Options for `ager.py`
@@ -148,7 +143,7 @@ python ager.py [options]
 - Optional stacked plot of SST and δ¹⁸O (.png)
 - Optional diagnostic plot showing selected tie points (.png)
 
-### Example: Running ager.py (using data from simulate.py example)
+### Example Command-Line Run: (uses data from the simulate.py example above)
 
 ```bash
 python ager.py --d18o amsamoa_d18o.csv --sst amsamoa_sst.csv --output amsamoa_interpolated_timeseries.csv --tiepoints_output amsamoa_tiepoints.csv --plot --check_anchors

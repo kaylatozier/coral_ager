@@ -20,8 +20,8 @@ cd coral_ager
 # Step 3: Install the package locally
 pip install -e .
 
-# Step 4: Locate the "coral_modules.py" folder for running the programs.
-cd ~/coral_ager/coral_modules
+# Step 4: Move into the "coral_modules.py" folder for running the programs.
+cd ./coral_modules
 ```
 ---
 

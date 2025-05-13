@@ -1,6 +1,6 @@
-# coral_ager :fish: :chart_with_upwards_trend:
+# coral_ager 🪸⏰
 
-**coral_ager** is a Python toolset that can both simulate coral δ18O and sea surface temperature (SST) datasets or work with imported datasets  and then builds a linear age model using SST tie points matched to δ¹⁸O troughs, interpolating the δ¹⁸O record onto evenly spaced time steps.
+**coral_ager** is a Python toolset that can both simulate coral δ¹⁸O and sea surface temperature (SST) datasets or work with imported datasets to build a linear age model using SST tie points matched to δ¹⁸O troughs, interpolating the δ¹⁸O record onto evenly spaced time steps.
 
 ---
 
@@ -19,8 +19,10 @@ cd coral_ager
 
 # Step 3: Install the package locally
 pip install -e .
-```
 
+# Step 4: Locate the "coral_modules.py" folder for running the programs.
+cd ~/coral_ager/coral_modules
+```
 ---
 
 ## Available Modules and Functions
@@ -146,7 +148,7 @@ python ager.py [options]
 - Optional stacked plot of SST and δ¹⁸O (.png)
 - Optional diagnostic plot showing selected tie points (.png)
 
-### Example: Running ager.py
+### Example: Running ager.py (using data from simulate.py example)
 
 ```bash
 python ager.py --d18o amsamoa_d18o.csv --sst amsamoa_sst.csv --output amsamoa_interpolated_timeseries.csv --tiepoints_output amsamoa_tiepoints.csv --plot --check_anchors

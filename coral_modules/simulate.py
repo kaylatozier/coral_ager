@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Generates synthetic coral δ¹⁸O and SST datasets."""
+"""Generates synthetic coral δ18O and SST datasets."""
 import argparse
 import numpy as np
 import pandas as pd
@@ -38,7 +38,7 @@ def generate_sst_data(years=20, warming_trend=0.02, start_temp=28, location="Fak
 
 def generate_coral_d18O_from_sst(sst_series, baseline=-5, temp_coeff=-0.23, location="Simulated Coral Site", filename="simulated_d18o_dataset.csv"):
     """
-    Generate δ¹⁸O values based on SST (inversely related) and save as a DataFrame.
+    Generate δ18O values based on SST (inversely related) and save as a DataFrame.
     """
     np.random.seed(42)
     noise = np.random.normal(0, 0.1, size=len(sst_series))

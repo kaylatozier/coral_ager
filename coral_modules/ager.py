@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-Builds an age model and interpolates coral δ18O to regular time steps from simulated output.
+Builds an age model and interpolates coral δ18O to regular time steps from simulated outputs or loaded datasets.
 """
 
 import argparse
@@ -15,11 +15,15 @@ from scipy.stats import pearsonr
 import os
 import sys
 
-output_dir = os.path.join(os.path.dirname(__file__), "outputs") #output folder for csv files
+output_dir = os.path.join(os.path.dirname(__file__), "outputs") #output folder for csv files and plots
 
 def load_input_data(args):
-    df_d18o = pd.read_csv(args.d18o, encoding='utf-8')
-    df_sst = pd.read_csv(args.sst, encoding='utf-8')
+    # If the file path is relative and cannot be located, join it with the output_dir 
+    d18o_path = args.d18o if os.path.isabs(args.d18o) else os.path.join(output_dir, args.d18o)
+    sst_path = args.sst if os.path.isabs(args.sst) else os.path.join(output_dir, args.sst)
+
+    df_d18o = pd.read_csv(d18o_path, encoding='utf-8')
+    df_sst = pd.read_csv(sst_path, encoding='utf-8')
     return df_d18o, df_sst
 
 def evaluate_correlation(tiepoints_df):
@@ -34,11 +38,11 @@ def evaluate_correlation(tiepoints_df):
 def pick_tie_points(df_d18o, df_sst, sst_spacing=10, d18o_spacing=6, sigma=2):
     """Pick tie points by matching SST peaks to δ18O troughs (inverse relationship)."""
 
-    # Step 1: Smooth the raw data
+    # Step 1: Smooth the raw data for easier peak determination
     sst_smooth = gaussian_filter1d(df_sst["SST (°C)"].values, sigma=sigma)
     d18o_smooth = gaussian_filter1d(df_d18o["d18o (per mil)"].values, sigma=sigma)
 
-    # Step 2: Find peaks and troughs
+    # Step 2: Find peaks (SST) and troughs (δ18O)
     sst_peaks, _ = find_peaks(sst_smooth, distance=sst_spacing)
     d18o_troughs, _ = find_peaks(-d18o_smooth, distance=d18o_spacing)
 
@@ -46,7 +50,7 @@ def pick_tie_points(df_d18o, df_sst, sst_spacing=10, d18o_spacing=6, sigma=2):
     num_tiepoints = min(len(sst_peaks), len(d18o_troughs))
     sst_indices = sst_peaks[:num_tiepoints]
     d18o_indices = d18o_troughs[:num_tiepoints]
-
+    # Located associated values of anchor points
     anchor_ages = df_sst.iloc[sst_indices]["Years Ago"].values
     anchor_depths = df_d18o.iloc[d18o_indices]["Depth (mm)"].values
 
@@ -60,10 +64,10 @@ def pick_tie_points(df_d18o, df_sst, sst_spacing=10, d18o_spacing=6, sigma=2):
 
     return anchor_depths, anchor_ages, tiepoints_df, sst_peaks, d18o_troughs
 
-def plot_anchor_points(df_d18o, df_sst, sst_peaks, d18o_troughs, sigma=2, plotname=None): #forcing plotname to be the default beacuse it isn't working
-    if plotname is None:
+def plot_anchor_points(df_d18o, df_sst, sst_peaks, d18o_troughs, sigma=2, plotname=None): #optional in argparse
+    if plotname is None: #forcing plotname to be the default beacuse it isn't working otherwise
         plotname = os.path.join(output_dir, "tie_points_plot.png")
-    # Smooth the arrays
+    # Smooth the arrays with Gaussian filter
     sst_array = df_sst["SST (°C)"].values
     d18o_array = df_d18o["d18o (per mil)"].values
     sst_smooth = gaussian_filter1d(sst_array, sigma=sigma)
